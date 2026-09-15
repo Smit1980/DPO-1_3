@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 3 · Данные и ИИ: что можно отправить и куда · 90 минут</title>
+<!--
+  Страница урока 3 для слушателей (ДПО-1, раздел 2 «Безопасная работа с ИИ»). Zero-build: весь CSS и JS встроены.
+  Собрано скриптом tools/publish.py из tools/urok3_body.html; конспект преподавателя — репозиторий DPO-1_konspekt.
+  Открывать по HTTP: python -m http.server 8000 из корня проекта.
+  Слайды: png/urok3_dannye_i_ii/NN_*.jpg; учебные файлы и памятки — tools/build_data.py.
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f7; --card:#ffffff; --border:#e2e8f0;
+  --indigo:#6366f1; --indigo-dk:#4338ca; --indigo-lt:#eef2ff;
+  --cyan:#0ea5e9; --cyan-lt:#e0f2fe;
+  --amber:#f59e0b; --amber-lt:#fffbeb;
+  --green:#16a34a; --green-lt:#f0fdf4;
+  --red:#dc2626; --red-lt:#fef2f2;
+  --violet-lt:#f5f3ff;
+  --text:#0f172a; --muted:#64748b;
+  --nav-h:56px;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(circle at 12% 0%,rgba(99,102,241,.14),transparent 32%),
+    radial-gradient(circle at 85% 6%,rgba(14,165,233,.13),transparent 34%),
+    linear-gradient(180deg,#f8fafc 0%,#eef2ff 30%,#f8fafc 100%);
+  color:var(--text);line-height:1.65;overflow-x:hidden;
+}
+
+/* NAV */
+nav.top{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:0 1px 10px rgba(0,0,0,.06);display:flex;align-items:center;padding:0 20px;z-index:900;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.top::-webkit-scrollbar{display:none}
+.nav-logo{font-weight:900;font-size:.93rem;color:var(--indigo-dk);white-space:nowrap;margin:0 10px 0 4px;flex-shrink:0}
+.nav-sep{width:1px;height:18px;background:var(--border);margin:0 6px;flex-shrink:0}
+.nav-link{padding:5px 10px;border-radius:6px;font-size:.75rem;font-weight:700;color:var(--muted);text-decoration:none;white-space:nowrap;transition:color .2s,background .2s;flex-shrink:0}
+.nav-link:hover,.nav-link.active{color:var(--indigo);background:var(--indigo-lt)}
+.nav-link:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* HERO */
+#hero{min-height:100vh;padding:calc(var(--nav-h) + 56px) 24px 64px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+.hero-badge{padding:5px 14px;background:var(--indigo-lt);border:1px solid #c7d2fe;border-radius:100px;font-size:.78rem;font-weight:700;color:var(--indigo-dk)}
+.hero-title{font-size:clamp(2rem,5.5vw,3.6rem);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:16px;max-width:900px}
+.hero-title em{color:var(--indigo);font-style:normal}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:680px;margin-bottom:36px}
+.hero-img{max-width:900px;width:100%;margin-bottom:40px}
+.hero-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:860px}
+.hero-nav a{padding:8px 16px;border-radius:10px;background:var(--card);border:1px solid var(--border);font-size:.82rem;font-weight:600;color:var(--text);text-decoration:none;box-shadow:0 2px 8px rgba(15,23,42,.05);transition:transform .15s,box-shadow .15s}
+.hero-nav a:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(99,102,241,.15)}
+
+/* SECTIONS */
+.sec{max-width:1180px;margin:0 auto;padding:72px 24px}
+.sec-head{margin-bottom:32px}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:14px}
+.n0{background:linear-gradient(135deg,#334155,#64748b)}
+.n1{background:linear-gradient(135deg,#6366f1,#818cf8)}
+.n2{background:linear-gradient(135deg,#0ea5e9,#38bdf8)}
+.n3{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
+.n4{background:linear-gradient(135deg,#16a34a,#4ade80)}
+.n5{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.n6{background:linear-gradient(135deg,#ec4899,#f472b6)}
+.n7{background:linear-gradient(135deg,#dc2626,#f87171)}
+.n8{background:linear-gradient(135deg,#0891b2,#22d3ee)}
+.n9{background:linear-gradient(135deg,#4338ca,#6366f1)}
+.n10{background:linear-gradient(135deg,#0d9488,#2dd4bf)}
+.n11{background:linear-gradient(135deg,#475569,#94a3b8)}
+.sec-title{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+.sec-desc{font-size:1rem;color:var(--muted);max-width:780px;line-height:1.75}
+.time-chip{display:inline-flex;align-items:center;gap:6px;margin-left:12px;vertical-align:middle;padding:4px 12px;border-radius:100px;background:var(--cyan-lt);color:#0c4a6e;font-size:.78rem;font-weight:700;white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:0 2px 10px rgba(15,23,42,.04)}
+.card h3{font-size:1rem;font-weight:800;margin-bottom:10px}
+.card+.card,.card+.prompt-box,.prompt-box+.card,.card+.silent,.silent+.card,.card+.viz,.viz+.card,.card+.details-key,.details-key+.card,.card+.warn-callout,.silent+.prompt-box,.prompt-box+.silent,.details-key+.silent,.silent+.details-key,.dl-grid+.card,.card+.dl-grid,.fine-table-wrap+.card,.card+.fine-table-wrap,.prompt-box+.details-key,.details-key+.prompt-box,.viz+.silent,.silent+.viz,.card+.img-card,.img-card+.card,.silent+.img-card,.details-key+.img-card,.img-card+.silent,.details-key+.viz,.viz+.details-key,.warn-callout+.card,.card+.formula,.formula+.card,.dl-grid+.silent,.silent+.dl-grid,.dl-grid+.prompt-box,.prompt-box+.dl-grid,.dl-grid+.details-key,.card+.poll-duo,.poll-duo+.card,.poll-answer+.card,.poll-answer+.silent,.grid+.card,.card+.grid,.grid+.silent,.grid+.warn-callout,.fine-table-wrap+.silent,.silent+.fine-table-wrap,.fine-table-wrap+.prompt-box,.formula+.viz,.viz+.formula,.warn-callout+.silent,.warn-callout+.prompt-box,.prompt-box+.warn-callout,.prompt-box+.prompt-box,.grid+.prompt-box,.prompt-box+.grid,.details-key+.details-key,.details-key+.warn-callout,.card+.tool-steps,.tool-steps+.card,.tool-steps+.silent,.tool-steps+.prompt-box,.dl-grid+.warn-callout{margin-top:18px}
+
+/* CARD GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid .c-name{font-weight:800;margin-bottom:8px;font-size:.96rem}
+.grid p:not(.c-name){color:var(--muted);font-size:.88rem;line-height:1.6}
+
+/* CALLOUTS */
+.note-callout{background:var(--indigo-lt);border:1px solid #c7d2fe;border-radius:14px;padding:16px 20px;margin-bottom:24px}
+.note-callout p{color:var(--indigo-dk);font-size:.92rem;line-height:1.7}
+.warn-callout{background:var(--amber-lt);border:1px solid #fcd34d;border-radius:16px;padding:20px 24px;margin-top:20px}
+.warn-callout p{color:#78350f;line-height:1.7;font-size:.93rem}
+.warn-callout p strong,.silent p strong{display:block;margin-bottom:4px}
+.quote-card{background:var(--card);border-left:4px solid var(--indigo);border-radius:0 16px 16px 0;padding:18px 22px;box-shadow:0 2px 10px rgba(15,23,42,.04)}
+.quote-card p{font-size:1rem;line-height:1.75;font-style:italic;color:#1e293b}
+.quote-card .who{display:block;margin-top:8px;font-style:normal;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+
+/* ЕСЛИ ЗАЛ МОЛЧИТ */
+.silent{background:var(--violet-lt);border:1px dashed #c4b5fd;border-radius:16px;padding:18px 22px}
+.silent .silent-head{display:flex;align-items:center;gap:8px;font-weight:800;color:#5b21b6;font-size:.92rem;margin-bottom:10px}
+.silent ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.silent li{padding-left:22px;position:relative;font-size:.9rem;line-height:1.6;color:#312e81}
+.silent li::before{content:"→";position:absolute;left:0;color:#7c3aed;font-weight:900}
+.silent .input-data{margin-top:12px;padding:12px 14px;background:#fff;border-radius:10px;border:1px solid #ddd6fe;font-size:.86rem;color:#3b0764}
+.silent .input-data b{display:block;margin-bottom:4px;color:#5b21b6}
+
+/* ВОПРОСЫ АУДИТОРИИ */
+.q-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.q-list li{padding:10px 14px 10px 44px;position:relative;background:#f8fafc;border:1px solid var(--border);border-radius:10px;font-size:.95rem;line-height:1.55}
+.q-list li::before{content:"?";position:absolute;left:12px;top:9px;width:22px;height:22px;border-radius:50%;background:var(--indigo);color:#fff;font-weight:900;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.q-list.after li::before{content:"↩";background:var(--cyan)}
+
+/* РОЛЬ / МЕТА КЕЙСА */
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.role-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:.82rem;font-weight:800;color:#fff}
+.role-1{background:linear-gradient(135deg,#6366f1,#818cf8)}
+.role-2{background:linear-gradient(135deg,#0ea5e9,#38bdf8)}
+.role-3{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.role-hidden{background:#94a3b8}
+.situation{font-size:1.02rem;line-height:1.7}
+.situation b{color:var(--indigo-dk)}
+
+/* ФАЙЛЫ ДЛЯ СКАЧИВАНИЯ */
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.dl{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:transform .15s,box-shadow .15s}
+.dl:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(99,102,241,.14);border-color:#c7d2fe}
+.dl .ico{width:40px;height:40px;border-radius:10px;background:var(--indigo-lt);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.dl > div{min-width:0;flex:1}
+.dl b{display:block;font-size:.88rem;line-height:1.3;word-break:break-all}
+.dl span{display:block;font-size:.76rem;color:var(--muted);margin-top:2px}
+.dl .arrow{margin-left:auto;color:var(--indigo);font-weight:900}
+
+/* ТАБЛИЦЫ */
+.fine-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card)}
+table.fine-table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:560px}
+table.fine-table caption{text-align:left;font-weight:700;padding:12px 16px;background:#f8fafc;border-bottom:1px solid var(--border);caption-side:top}
+table.fine-table th{text-align:left;padding:10px 14px;background:var(--indigo-lt);color:var(--indigo-dk);font-weight:700;vertical-align:top}
+table.fine-table td{padding:10px 14px;border-top:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.55}
+table.fine-table td.t{white-space:nowrap;font-weight:700;color:var(--indigo-dk)}
+table.fine-table tr.hl td{background:var(--violet-lt)}
+
+/* ШАГИ */
+.step-list{list-style:none;counter-reset:pstep;display:flex;flex-direction:column;gap:10px}
+.step-list li{counter-increment:pstep;padding-left:32px;position:relative;font-size:.94rem;line-height:1.6}
+.step-list li::before{content:counter(pstep);position:absolute;left:0;top:2px;width:22px;height:22px;border-radius:50%;background:var(--indigo);color:#fff;font-size:.74rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* ФОРМУЛА */
+.formula{background:linear-gradient(135deg,var(--indigo),#0ea5e9);border-radius:18px;padding:26px 24px;text-align:center;color:#fff;box-shadow:0 20px 50px rgba(99,102,241,.3)}
+.formula .f{font-size:clamp(1.15rem,3vw,1.9rem);font-weight:900;letter-spacing:.5px;line-height:1.4}
+.formula .f span{display:inline-block;padding:6px 14px;border-radius:10px;background:rgba(255,255,255,.16);margin:4px 2px}
+.formula p{margin-top:10px;font-size:.92rem;color:rgba(255,255,255,.85)}
+
+/* ГОЛОСОВАНИЕ */
+.poll-duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
+@media (max-width:700px){.poll-duo{grid-template-columns:1fr}}
+.poll-opt{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:18px 20px;text-align:left;cursor:pointer;font:inherit;color:var(--text);font-size:.95rem;line-height:1.5;transition:transform .15s,box-shadow .15s,border-color .15s}
+.poll-opt:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.12)}
+.poll-opt.chosen{border-color:var(--indigo);box-shadow:0 8px 24px rgba(99,102,241,.18)}
+.poll-opt .sign{font-size:1.5rem;font-weight:900;display:block;margin-bottom:6px}
+.poll-opt[data-vote="yes"] .sign{color:var(--green)}
+.poll-opt[data-vote="no"] .sign{color:var(--red)}
+.poll-answer{border-radius:12px;padding:13px 18px;background:var(--indigo-lt);color:var(--indigo-dk);font-weight:700;font-size:.95rem}
+
+/* КЛЮЧ ПРЕПОДАВАТЕЛЯ */
+.details-key{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 2px 10px rgba(15,23,42,.04)}
+.details-key summary{cursor:pointer;padding:16px 22px;font-weight:800;list-style:none;display:flex;align-items:center;gap:10px}
+.details-key summary::-webkit-details-marker{display:none}
+.details-key summary::before{content:"🔒";font-size:1rem}
+.details-key[open] summary::before{content:"🔓"}
+.details-key summary .hint{margin-left:auto;font-size:.78rem;font-weight:700;color:var(--muted)}
+.details-key .body{padding:0 22px 20px;border-top:1px solid var(--border);padding-top:16px}
+.details-key .body p,.details-key .body li{font-size:.92rem;line-height:1.65}
+.details-key .body ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.verdict{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--green-lt);color:#14532d;font-weight:700;font-size:.92rem}
+
+/* IMAGE CARD */
+.img-card{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(15,23,42,.12);cursor:zoom-in}
+.img-card img{display:block;width:100%;height:auto}
+.img-card .img-missing-caption{display:none}
+.img-card.img-missing{border:2px dashed var(--border);background:var(--indigo-lt);min-height:220px;display:flex;align-items:center;justify-content:center;box-shadow:none;cursor:default}
+.img-card.img-missing img{display:none}
+.img-card.img-missing .img-missing-caption{display:block;color:var(--muted);font-size:.85rem;text-align:center;padding:24px;max-width:380px}
+
+/* VIZ */
+.viz{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.07)}
+.viz-bar{display:flex;align-items:center;gap:10px;padding:9px 14px;background:#f8fafc;border-bottom:1px solid var(--border)}
+.dots{display:flex;gap:5px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febb2c}.dg{background:#27c840}
+.viz-lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);flex:1}
+.viz-fs{display:flex;align-items:center;gap:5px;padding:4px 10px;background:transparent;border:1px solid var(--border);border-radius:6px;font-size:.71rem;font-weight:600;color:var(--muted);cursor:pointer;transition:background .2s,color .2s,border-color .2s;white-space:nowrap}
+.viz-fs:hover{background:var(--indigo-lt);color:var(--indigo);border-color:#c7d2fe}
+.viz iframe{width:100%;border:none;display:block}
+
+/* PROMPT BOX */
+.prompt-box{background:#0f172a;border-radius:14px;overflow:hidden}
+.prompt-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:#1e293b;color:#e2e8f0;font-size:.82rem;font-weight:700}
+.prompt-head .tag{font-size:.7rem;padding:2px 8px;border-radius:100px;background:rgba(99,102,241,.35);color:#c7d2fe;margin-left:8px;font-weight:700}
+.copy-btn{padding:5px 12px;border-radius:8px;border:1px solid #475569;background:transparent;color:#e2e8f0;font-size:.76rem;font-weight:700;cursor:pointer;transition:background .2s;flex-shrink:0}
+.copy-btn:hover{background:#334155}
+.prompt-box pre{margin:0;padding:18px 16px;color:#e2e8f0;font-size:.84rem;line-height:1.6;overflow-x:auto;white-space:pre-wrap;word-break:break-word;font-family:Consolas,'Courier New',monospace}
+
+/* LIGHTBOX */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.92);z-index:2000;display:flex;align-items:center;justify-content:center;padding:32px;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.open{opacity:1;pointer-events:auto}
+.overlay img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.overlay-close{position:absolute;top:18px;right:22px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
+.overlay-close:hover{background:rgba(255,255,255,.22)}
+.overlay-download{position:absolute;top:18px;right:72px;height:40px;padding:0 16px;border-radius:20px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;text-decoration:none;z-index:2}
+.overlay-download:hover{background:rgba(255,255,255,.22)}
+
+/* FULLSCREEN IFRAME */
+#fs-overlay{position:fixed;inset:0;background:rgba(2,6,23,.94);z-index:2100;display:none;flex-direction:column}
+#fs-overlay.open{display:flex}
+#fs-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(0,0,0,.4);border-bottom:1px solid rgba(255,255,255,.08)}
+#fs-title{font-size:.8rem;font-weight:700;color:rgba(255,255,255,.65);flex:1}
+#fs-close{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.8);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#fs-close:hover{background:rgba(255,255,255,.2)}
+#fs-frame{flex:1;border:none;background:#fff}
+
+/* CHECKLIST */
+.checklist-progress-bar{height:10px;border-radius:100px;background:var(--indigo-lt);overflow:hidden;margin-bottom:20px}
+.checklist-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--indigo),var(--cyan));border-radius:100px;transition:width .3s ease}
+.checklist-items{list-style:none;display:flex;flex-direction:column;gap:12px}
+.checklist-items label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.95rem;line-height:1.5}
+.checklist-items input{width:18px;height:18px;accent-color:var(--indigo);cursor:pointer;flex-shrink:0;margin-top:3px}
+.checklist-done{margin-top:18px;padding:12px 16px;background:var(--green-lt);color:var(--green);border-radius:10px;font-weight:700}
+.check-group{margin-bottom:20px}
+.check-group:last-child{margin-bottom:0}
+.check-group h3{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:10px}
+
+/* QUIZ */
+.quiz{display:flex;flex-direction:column;gap:18px}
+.quiz-question{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px}
+.quiz-text{font-weight:700;margin-bottom:12px}
+.quiz-options{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.quiz-options label{display:flex;align-items:flex-start;gap:8px;font-size:.92rem;cursor:pointer;line-height:1.5}
+.quiz-options input{accent-color:var(--indigo);margin-top:4px}
+.quiz-options label.quiz-correct-answer{color:var(--green);font-weight:700}
+.quiz-check{padding:8px 16px;border-radius:9px;border:none;background:var(--indigo);color:#fff;font-weight:700;font-size:.82rem;cursor:pointer}
+.quiz-check:hover{background:var(--indigo-dk)}
+.quiz-feedback{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:.9rem;line-height:1.55}
+.quiz-feedback.correct{background:var(--green-lt);color:var(--green)}
+.quiz-feedback.incorrect{background:var(--red-lt);color:var(--red)}
+.quiz-score-box{text-align:center;font-weight:800;color:var(--indigo-dk)}
+
+/* CONCLUSION */
+.conclusion-list{list-style:none;counter-reset:concl;display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.conclusion-list li{counter-increment:concl;padding-left:38px;position:relative;font-size:1rem;line-height:1.6}
+.conclusion-list li::before{content:counter(concl);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:50%;background:var(--indigo);color:#fff;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+.next-link{display:inline-flex;align-items:center;gap:10px;padding:16px 22px;border-radius:14px;background:var(--indigo);color:#fff;font-weight:800;text-decoration:none;box-shadow:0 12px 30px rgba(99,102,241,.3);transition:transform .15s}
+.next-link:hover{transform:translateY(-2px)}
+.svc-link{color:var(--indigo);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+
+/* SCROLL REVEAL */
+.fade{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.fade.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.fade{opacity:1;transform:none;transition:none}}
+@media (max-width:900px){.sec{padding:56px 18px}.time-chip{margin-left:0;margin-top:8px;white-space:normal}}
+
+footer{text-align:center;padding:32px 20px 48px;color:var(--muted);font-size:.85rem}
+
+/* ВЕРСИЯ 2 */
+.sec > * + *{margin-top:18px}
+.q-hint{margin-top:10px;font-size:.84rem;color:var(--muted)}
+.live-tag,.ready-tag{display:inline-block;padding:1px 9px;border-radius:100px;font-size:.72rem;font-weight:800;white-space:nowrap}
+.live-tag{background:var(--green-lt);color:var(--green)}
+.ready-tag{background:var(--amber-lt);color:#b45309}
+.role-test td:first-child{font-weight:700}
+.ready{background:var(--card);border:1px solid #fcd34d;border-radius:16px;box-shadow:0 2px 10px rgba(15,23,42,.04)}
+.ready summary{cursor:pointer;padding:15px 22px;font-weight:800;list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ready summary::-webkit-details-marker{display:none}
+.ready summary::before{content:"🤖";font-size:1rem}
+.ready summary .hint{margin-left:auto;font-size:.78rem;font-weight:700;color:var(--muted)}
+.ready .body{padding:14px 22px 20px;border-top:1px solid var(--border)}
+.ready pre{margin:0;padding:14px 16px;border-radius:12px;background:#fffdf5;border:1px solid #fde68a;color:#1e293b;font-family:'Segoe UI',system-ui,sans-serif;font-size:.9rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto}
+.ready .how{margin-top:10px;font-size:.86rem;color:var(--muted)}
+.errors{margin-top:10px;padding:12px 16px;border-radius:12px;background:var(--red-lt);border:1px solid #fecaca}
+.errors b{color:#991b1b}
+.errors ul{margin-top:6px;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.errors li{font-size:.9rem;line-height:1.55;color:#7f1d1d}
+.numbers td.ok{color:var(--green);font-weight:700}
+.numbers td.bad{color:var(--red);font-weight:700}
+.rule-card{background:var(--red-lt);border:1px solid #fecaca;border-radius:16px;padding:16px 22px}
+.rule-card p{color:#991b1b;font-size:.94rem;line-height:1.7}
+.rule-card p strong{display:block;margin-bottom:4px}
+
+/* УРОК 3 */
+.details-key .body > .prompt-box + .prompt-box,.details-key .body > .prompt-box + p,.details-key .body > ol + .prompt-box{margin-top:14px}
+code{font-family:Consolas,'Courier New',monospace;font-size:.86em;background:var(--indigo-lt);color:var(--indigo-dk);padding:1px 5px;border-radius:5px}
+.prompt-desc{padding:8px 16px 0;color:#94a3b8;font-size:.8rem}
+table.board td:not(:first-child){text-align:center}
+.cell{min-width:64px;padding:6px 10px;border-radius:9px;border:1px solid var(--border);background:#fff;font:inherit;font-weight:900;font-size:1rem;cursor:pointer;color:var(--muted)}
+.cell.ok{background:var(--green-lt);border-color:#86efac;color:var(--green)}
+.cell.bad{background:var(--red-lt);border-color:#fca5a5;color:var(--red)}
+.formula .f span[style]{text-decoration:line-through dotted rgba(255,255,255,.5)}
+</style>
+</head>
+<body>
+
+<nav aria-label="Навигация по странице" class="top">
+<a class="nav-link" href="../index.html">← Главная</a>
+<span class="nav-sep"></span>
+<span class="nav-logo">Урок 3 · Данные и ИИ</span>
+<span class="nav-sep"></span>
+
+<a class="nav-link" href="#s1">Вход</a>
+<a class="nav-link" href="#s2">Суд</a>
+<a class="nav-link" href="#s3">Категории</a>
+<a class="nav-link" href="#s4">Куда уходит</a>
+<a class="nav-link" href="#s5">Светофор</a>
+<a class="nav-link" href="#s6">Подготовка данных</a>
+<a class="nav-link" href="#s7">Найдите 12</a>
+<a class="nav-link" href="#s8">Метки</a>
+<a class="nav-link" href="#s9">Роль</a>
+<a class="nav-link" href="#s10">Карта</a>
+<a class="nav-link" href="#s11">Итог и ДЗ</a>
+<a class="nav-link" href="#dl">Памятки</a>
+<a class="nav-link" href="#checklist">Чек-лист</a>
+<a class="nav-link" href="#quiz">Квиз</a>
+</nav>
+<header id="hero">
+<div class="hero-badges">
+<span class="hero-badge">Раздел 2 · Безопасная работа с ИИ</span>
+<span class="hero-badge">Урок 3 · 90 минут</span>
+<span class="hero-badge">Темы 1–2 · практикумы «Светофор данных» и «Что можно загрузить в ИИ?»</span>
+<span class="hero-badge">Для специалистов предприятий ОПК</span>
+</div>
+<h1 class="hero-title">Данные и ИИ: что можно <em>отправить</em> и куда</h1>
+<p class="hero-sub">За 90 минут вы научитесь отвечать на три вопроса до того, как нажать «Отправить»: <b>что</b> это за данные, <b>куда</b> они уйдут и <b>как</b> их подготовить, чтобы нейросеть помогла, а лишнее осталось у вас.</p>
+<figure class="img-card hero-img" data-lightbox="">
+<img alt="Слайд «Одна просьба — пять утечек»: сообщение в чат-бот с подчёркнутыми ФИО и подразделением, контрагентом, номером договора, изделием и объёмом брака, телефоном чужого сотрудника" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/01_odna_prosba_pyat_utechek.jpg"/>
+<figcaption class="img-missing-caption">Слайд 01 «Одна просьба — пять утечек»</figcaption>
+</figure>
+<nav aria-label="Разделы страницы" class="hero-nav">
+
+<a href="#s3">Лестница данных</a>
+<a href="#s4">Что написано в условиях сервисов</a>
+<a href="#s5">🚦 Светофор 2.0</a>
+<a href="#s8">Метки в четырёх моделях</a>
+<a href="#s10">Карта нейросетей</a>
+<a href="#dl">📄 Памятки для скачивания</a>
+</nav>
+</header>
+<main>
+<!-- ══════════ БЛОК 0: ПОДГОТОВКА ══════════ -->
+
+<!-- ══════════ БЛОК 1: ВХОД ══════════ -->
+<section class="sec" id="s1">
+<div class="sec-head fade">
+<div class="num-badge n1">1</div>
+<h2 class="sec-title">Вход: одна просьба — пять утечек </h2>
+<p class="sec-desc">Утечка редко выглядит как «слил секретный документ». Обычно это вежливая просьба помочь с письмом, в которую вставили лишнее.</p>
+</div>
+<div class="card fade">
+<p class="situation"><b>На экране — сообщение в бесплатную нейросеть.</b></p>
+<div class="prompt-box" style="margin-top:12px">
+<div class="prompt-head"><span>Просьба сотрудника · учебный пример</span></div>
+<pre>Привет! Я Петров из ОТК цеха № 5. Помоги написать письмо в ООО «Поставщик-Альфа» по договору № 45/2026: в партии блоков питания БП-12 брак — 14 штук из 200. Контакт у них — Смирнова, +7 900 000-00-17. Надо жёстко, но вежливо.</pre>
+</div>
+</div>
+<div class="poll-duo fade">
+<button class="poll-opt" data-poll="1" data-vote="yes" type="button"><span class="sign">Да</span>Можно отправить: секретного здесь ничего нет</button>
+<button class="poll-opt" data-poll="1" data-vote="no" type="button"><span class="sign">Нет</span>Нельзя: здесь есть лишнее</button>
+</div>
+<div class="poll-answer fade" id="poll-answer-1">Выберите вариант — разбор ниже.</div>
+<div class="rule-card fade">
+<p><strong>🔒 Правило данных</strong>Во внешние нейросети — только открытые сведения, учебные файлы курса и обезличенные описания задач. Политика информационной безопасности Концерна ВКО «Алмаз – Антей» и локальные акты вашего предприятия важнее этого урока. Сомневаетесь — считайте данные «красными».</p>
+</div>
+
+<details class="details-key fade">
+<summary>Разбор: пять утечек <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<ol style="padding-left:20px;display:flex;flex-direction:column;gap:6px">
+<li><b>ФИО и подразделение автора</b> — «Петров из ОТК цеха № 5».</li>
+<li><b>Контрагент</b> — ООО «Поставщик-Альфа».</li>
+<li><b>Номер договора</b> — № 45/2026.</li>
+<li><b>Изделие и объём брака</b> — БП-12, 14 из 200: сведения о качестве поставок.</li>
+<li><b>ФИО и телефон человека из другой организации</b> — персональные данные третьего лица.</li>
+</ol>
+
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 2: ЧТО МНЕ БУДЕТ ══════════ -->
+<section class="sec" id="s2">
+<div class="sec-head fade">
+<div class="num-badge n2">2</div>
+<h2 class="sec-title">«Что мне будет?» Это уже происходит </h2>
+<p class="sec-desc">В России уже есть судебное решение: загрузить рабочие отчёты в публичную нейросеть — значит разгласить коммерческую тайну.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Это уже происходит»: ×30 данных ушло в публичные нейросети за 2025 год по данным ГК «Солар»; 1 из 5 утечек связана с бесконтрольным ИИ по данным «Информзащиты»; дело № 02-1545/2026 — суд признал загрузку отчётов в нейросеть разглашением тайны" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/02_eto_uzhe_proishodit.jpg"/>
+<figcaption class="img-missing-caption">Слайд 02 «Это уже происходит»</figcaption>
+</figure>
+<div class="quote-card fade">
+<p>Директор по продажам московской компании загружала в DeepSeek внутренние отчёты о сделках, поступлениях денег и финансовых показателях отделов и пересылала переписку на личную почту. Её уволили за разглашение охраняемой законом тайны (ТК РФ, ст. 81, п. 6, пп. «в»). Суд признал увольнение законным: выгрузка сведений, составляющих коммерческую тайну, в нейросеть — это их разглашение. Доказывать, что данные кто-то прочитал, не понадобилось.</p>
+<span class="who">Дело № 02-1545/2026 · Бабушкинский районный суд Москвы · по сообщениям <a class="svc-link" href="https://pravo.ru/news/264969/" rel="noopener" target="_blank">Право.ру</a> и <a class="svc-link" href="https://rapsinews.ru/moscourts_news/20260727/312063726.html" rel="noopener" target="_blank">РАПСИ</a>, 27.07.2026</span>
+</div>
+<div class="grid fade">
+<div class="card"><p class="c-name">×30</p><p>Во столько раз за 2025 год вырос объём данных, которые сотрудники российских компаний отправили в публичные нейросети. Анализ трафика 150 компаний, <a class="svc-link" href="https://www.cnews.ru/news/top/2026-02-04_sotrudniki_rossijskih_kompanij" rel="noopener" target="_blank">ГК «Солар»</a>.</p></div>
+<div class="card"><p class="c-name">1 из 5</p><p>Столько организаций, столкнувшихся с утечками в июле 2026 года, связали их с несанкционированным использованием ИИ; годом ранее — около 12%. <a class="svc-link" href="https://www.anti-malware.ru/news/2026-07-17-111332/50737" rel="noopener" target="_blank">«Информзащита»</a>.</p></div>
+</div>
+<div class="card fade">
+<h3>Вопрос для размышления</h3>
+<ul class="q-list"><li>Почему суду не понадобилось доказывать, что кто-то эти отчёты прочитал?</li></ul>
+</div>
+<details class="details-key fade">
+<summary>Разбор <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<p>Разглашение — это когда информация стала доступна третьим лицам без согласия обладателя. Оператор сервиса — третье лицо, отчёты оказались на его серверах.</p>
+
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 3: КАТЕГОРИИ ДАННЫХ ══════════ -->
+<section class="sec" id="s3">
+<div class="sec-head fade">
+<div class="num-badge n3">3</div>
+<h2 class="sec-title">Тема 1. Какие бывают данные </h2>
+<p class="sec-desc">Данные — это лестница из пяти ступеней. Чем выше ступень, тем меньше мест, куда их можно отправить. Для публичной нейросети открыты только две нижние, третья — после обезличивания.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Данные — это лестница»: 01 открытые (ГОСТ, закон) и 02 учебные (файлы курса) — зелёные, 03 обезличенные — жёлтые, 04 внутренние (регламент, протокол) и 05 конфиденциальные (ПДн, коммерческая тайна, ДСП) — красные; публичной нейросети доступны ступени 1–2, ступень 3 — после обезличивания" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/03_lestnica_dannyh.jpg"/>
+<figcaption class="img-missing-caption">Слайд 03 «Данные — это лестница»</figcaption>
+</figure>
+<div class="card fade">
+<h3>💡 Метафора: проходная предприятия</h3>
+<p style="font-size:.95rem;line-height:1.7">Открытые сведения — рекламный буклет на стойке у входа: его берёт кто угодно. Учебные — плакат в учебном классе. Обезличенные — фото цеха, где закрыли номера и лица. Внутренние — то, что лежит за проходной. Конфиденциальные — за второй дверью с доступом по списку. <b>Публичная нейросеть — посетитель, который не прошёл проходную.</b></p>
+</div>
+<div class="fine-table-wrap fade">
+<table class="fine-table">
+<caption>Лестница категорий — по программе курса, с учётом предприятий ОПК</caption>
+<thead><tr><th>Ступень</th><th>Что это</th><th>Пример</th><th>В публичную нейросеть</th></tr></thead>
+<tbody>
+<tr><td class="t">1. Открытые</td><td>Официально опубликовано</td><td>ГОСТ, закон, пресс-релиз</td><td>🟢 Можно</td></tr>
+<tr><td class="t">2. Учебные</td><td>Придуманы для обучения и тренировки</td><td>Файлы курса</td><td>🟢 Можно</td></tr>
+<tr><td class="t">3. Обезличенные</td><td>Нельзя понять, о ком и о чём речь, без дополнительной информации</td><td>«Сотрудник А сорвал срок поставщику Б»</td><td>🟡 Если разрешают правила организации</td></tr>
+<tr><td class="t">4. Внутренние</td><td>Для работы внутри организации, без грифа</td><td>Регламент, протокол планёрки, переписка</td><td>🛑 Нельзя</td></tr>
+<tr><td class="t">5. Конфиденциальные</td><td>Охраняются законом или режимом</td><td>Персональные данные (152-ФЗ), коммерческая тайна (98-ФЗ), служебная информация ограниченного распространения (ДСП)</td><td>🛑 Нельзя</td></tr>
+</tbody>
+</table>
+</div>
+<p class="q-hint fade">Сведения режимного характера, ТТХ изделий и конструкторская документация в контексте ИИ-сервисов не обсуждаются вообще.</p>
+<div class="card fade">
+<h3>Персональные данные — это не только паспорт</h3>
+<p style="font-size:.95rem;line-height:1.7">По 152-ФЗ персональные данные — «любая информация, относящаяся к прямо или косвенно определенному или определяемому физическому лицу». ФИО с должностью, табельный номер, фото, голос и даже «единственный главный технолог цеха № 5» — это персональные данные.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Три неочевидных правила»: пересказ = передача (секретны сведения, а не файл); скриншот = загрузка (уходит всё, что было на экране); мозаика (открытое + открытое = закрытое)" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/04_tri_neochevidnyh_pravila.jpg"/>
+<figcaption class="img-missing-caption">Слайд 04 «Три неочевидных правила»</figcaption>
+</figure>
+<div class="card fade">
+<h3>Проверьте себя: к какой ступени относится?</h3>
+<ul class="q-list">
+<li>Опубликованный на сайте Росстандарта ГОСТ</li>
+<li>График отпусков отдела</li>
+<li>Презентация для заказчика с ценами</li>
+</ul>
+
+</div>
+
+<details class="details-key fade">
+<summary>Ответы <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<ul>
+<li><b>ГОСТ с сайта Росстандарта</b> — ступень 1, открытые.</li>
+<li><b>График отпусков</b> — ступень 5: персональные данные.</li>
+<li><b>Презентация с ценами</b> — ступень 5: коммерческая тайна.</li>
+</ul>
+<p class="verdict">Золотое правило: сомневаетесь — считайте красным.</p>
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 4: КУДА УХОДИТ ЗАПРОС ══════════ -->
+<section class="sec" id="s4">
+<div class="sec-head fade">
+<div class="num-badge n4">4</div>
+<h2 class="sec-title">Куда уходит запрос и что написано в условиях </h2>
+<p class="sec-desc">Нажать «Отправить» — значит передать текст компании, которой принадлежит сервис. Что она с ним делает, написано в условиях, которые почти никто не читает.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Куда уходит ваш запрос»: ваш текст и файлы → серверы разработчика → история чатов → обучение и люди-рецензенты → ссылка «Поделиться» → утечка из самого сервиса; без VPN не значит в закрытом контуре, выключенное обучение не значит, что данные не хранятся, российский сервис не значит разрешение" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/05_kuda_uhodit_zapros.jpg"/>
+<figcaption class="img-missing-caption">Слайд 05 «Куда уходит ваш запрос»</figcaption>
+</figure>
+<div class="card fade">
+<h3>💡 Метафора: пропуск на завод для водителя доставки</h3>
+<p style="font-size:.95rem;line-height:1.7">Российская служба доставки или зарубежная — водитель всё равно посторонний. Отличается только юрисдикция его компании. Корпоративная модель в закрытом контуре — свой водитель предприятия, которому разрешено ездить по территории.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Один документ — разный цвет»: публичный зарубежный (данные за пределами РФ, только открытое и учебное) и публичный российский (в РФ у разработчика, плюс обезличенные описания) — красный для внутреннего регламента; корпоративный (в РФ по договору или в контуре) и локальная модель (внутри организации) — зелёный" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/06_odin_dokument_raznyy_cvet.jpg"/>
+<figcaption class="img-missing-caption">Слайд 06 «Один документ — разный цвет»</figcaption>
+</figure>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Что написано в условиях сервисов»: GigaChat, соглашение, п. 8.7 — не загружать персональные данные третьих лиц; Алиса AI, условия, п. 5.1 — для некоммерческого использования, для развлекательных целей; Gemini — не вводите конфиденциальную информацию, которую не хотели бы показать рецензенту" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/07_chto_napisano_v_usloviyah.jpg"/>
+<figcaption class="img-missing-caption">Слайд 07 «Что написано в условиях сервисов»</figcaption>
+</figure>
+<div class="fine-table-wrap fade">
+<table class="fine-table">
+<caption>Что написано в условиях сервисов — подробнее в памятке 2</caption>
+<thead><tr><th>Сервис</th><th>Где данные</th><th>Из условий и справки</th><th>Доступ из РФ</th></tr></thead>
+<tbody>
+<tr><td><a class="svc-link" href="https://giga.chat/" rel="noopener" target="_blank">GigaChat</a></td><td>РФ</td><td><a class="svc-link" href="https://developers.sber.ru/docs/ru/policies/gigachat-agreement/individuals" rel="noopener" target="_blank">Соглашение для физлиц</a>, п. 8.7: «Клиент обязуется не предоставлять/загружать в Сервис какие-либо персональные данные третьих лиц…»; п. 2.4: бесплатный режим — «исключительно в личных некоммерческих целях». <a class="svc-link" href="https://giga.chat/help" rel="noopener" target="_blank">Справка</a>: «ГигаЧат может ошибаться — проверяйте его ответы»; после кнопки «Поделиться» часть диалога могут увидеть другие</td><td>Без VPN</td></tr>
+<tr><td><a class="svc-link" href="https://alice.yandex.ru/" rel="noopener" target="_blank">Алиса AI</a></td><td>РФ</td><td><a class="svc-link" href="https://yandex.ru/legal/alice_chat/ru/" rel="noopener" target="_blank">Условия от 10.09.2026</a>, п. 5.1: сервис предоставляется «исключительно для некоммерческого использования Пользователем в домашних условиях в ограниченном кругу людей для развлекательных целей»; п. 4.3: запрос и загружаемые файлы — по безотзывной лицензии Яндексу; п. 6.6: от участия в улучшении можно отказаться в Яндекс ID</td><td>Без VPN</td></tr>
+<tr><td><a class="svc-link" href="https://chat.qwen.ai/" rel="noopener" target="_blank">Qwen</a></td><td>Сингапур, КНР</td><td><a class="svc-link" href="https://qwen.ai/privacypolicy" rel="noopener" target="_blank">Политика конфиденциальности</a>: данные хранятся и обрабатываются в Сингапуре и материковом Китае; срок хранения диалогов не опубликован</td><td>Обычно без VPN, без гарантии</td></tr>
+<tr><td><a class="svc-link" href="https://chatgpt.com/" rel="noopener" target="_blank">ChatGPT</a></td><td>США</td><td><a class="svc-link" href="https://help.openai.com/en/articles/5722486-how-your-data-is-used-to-improve-model-performance" rel="noopener" target="_blank">Справка OpenAI</a>: у бесплатного и личных платных тарифов диалоги по умолчанию используются для обучения, это отключается в Settings → Data Controls; Temporary Chat удаляется через 30 дней</td><td>РФ официально не поддерживается</td></tr>
+<tr><td><a class="svc-link" href="https://chat.deepseek.com/" rel="noopener" target="_blank">DeepSeek</a></td><td>КНР</td><td><a class="svc-link" href="https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html" rel="noopener" target="_blank">Политика от 10.02.2026</a>: данные собираются, обрабатываются и хранятся в КНР. В январе 2025 года исследователи <a class="svc-link" href="https://www.wiz.io/blog/wiz-research-uncovers-exposed-deepseek-database-leak" rel="noopener" target="_blank">Wiz</a> нашли открытую базу DeepSeek с историей чатов</td><td>Обычно без VPN, без гарантии</td></tr>
+<tr><td><a class="svc-link" href="https://gemini.google.com/" rel="noopener" target="_blank">Gemini</a></td><td>США</td><td><a class="svc-link" href="https://support.google.com/gemini/answer/13594961" rel="noopener" target="_blank">Центр конфиденциальности</a>: не вводите конфиденциальную информацию, которую не хотели бы показать рецензенту; просмотренные рецензентами диалоги хранятся до 3 лет</td><td>РФ нет в списке регионов</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card fade">
+<h3>Инцидент, который запоминается</h3>
+<p style="font-size:.95rem;line-height:1.7">Летом 2025 года переписки ChatGPT, Grok и Claude, открытые кнопкой «Поделиться», нашлись в поиске Google. Только у Grok в поиске оказалось больше 370 тысяч диалогов. Кнопка «Поделиться» делает диалог публичной страницей.</p>
+</div>
+
+
+<details class="details-key fade">
+<summary>Главное <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<ul>
+<li><b>Российский сервис ≠ разрешение.</b> Он решает вопрос юрисдикции, но не тайны.</li>
+<li><b>Выключенное обучение ≠ данные не хранятся.</b></li>
+<li><b>«Без VPN» ≠ «в закрытом контуре».</b> Веб-чаты российских сервисов — облачные.</li>
+<li><b>Для рабочих документов</b> — корпоративный инструмент, который разрешила организация.</li>
+</ul>
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 5: СВЕТОФОР ══════════ -->
+<section class="sec" id="s5">
+<div class="sec-head fade">
+<div class="num-badge n5">5</div>
+<h2 class="sec-title">Практикум «Светофор данных 2.0» </h2>
+<p class="sec-desc">В уроке 1 светофор был простым: чертёж — красный, ГОСТ — зелёный. Сегодня карточки с подвохом: цвет зависит не только от данных, но и от того, куда вы их несёте.</p>
+</div>
+
+<div class="viz fade">
+<div class="viz-bar">
+<div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div>
+<span class="viz-lbl">Светофор данных 2.0</span>
+<button class="viz-fs" data-fs-src="demo_svetofor_2.html" data-fs-title="Светофор данных 2.0: цвет зависит от данных и инструмента" type="button">⛶ На весь экран</button>
+</div>
+<iframe data-autofit="" height="640" loading="lazy" src="demo_svetofor_2.html" title="Светофор данных 2.0: цвет зависит от данных и инструмента"></iframe>
+</div>
+<div class="dl-grid fade">
+<a class="dl" download="" href="../data/urok3/20_svetofor_2_0_kartochki.txt"><span class="ico">🚦</span><div><b>20_svetofor_2_0_kartochki.txt</b><span>10 карточек с ответами — для печати и дома</span></div><span class="arrow">↓</span></a>
+</div>
+
+<details class="details-key fade">
+<summary>Главное <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<ul>
+<li>Передача — это не только файл: пересказ, скриншот, фото, диктовка голосом.</li>
+<li>Цвет определяет пара «данные × инструмент».</li>
+<li>Открытое + открытое может дать закрытое — мозаика.</li>
+<li>Сомнение — красный.</li>
+</ul>
+</div>
+</details>
+</section>
+<!-- ══════════ БЛОК 6: ПОДГОТОВКА ДАННЫХ ══════════ -->
+<section class="sec" id="s6">
+<div class="sec-head fade">
+<div class="num-badge n6">6</div>
+<h2 class="sec-title">Тема 2. Подготовка данных: минимум и четыре приёма </h2>
+<p class="sec-desc">Сначала спросите себя, нужны ли ИИ эти данные вообще. Если нужны — отправьте минимум и в таком виде, чтобы посторонний не понял, о ком и о чём речь.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Подготовка данных: 4 приёма»: 01 удалить (телефон → убрано), 02 метка (Петров → [СОТРУДНИК_1]), 03 обобщить (180 шт. → 100–200 шт.), 04 синтетика (реальные КП → Поставщик А, Б, В); внизу предупреждение: попросить нейросеть обезличить = отправить ей оригинал" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/08_chetyre_priema.jpg"/>
+<figcaption class="img-missing-caption">Слайд 08 «Подготовка данных: 4 приёма»</figcaption>
+</figure>
+<div class="card fade">
+<h3>💡 Метафора: консультация у стороннего специалиста</h3>
+<p style="font-size:.95rem;line-height:1.7">Вы спрашиваете знакомого юриста: «Что проверить в договоре поставки, если поставщик сорвал сроки?» — а не отправляете ему договор с реквизитами. Ответ получите почти такой же.</p>
+</div>
+<div class="fine-table-wrap fade">
+<table class="fine-table">
+<caption>Четыре приёма и методы обезличивания Роскомнадзора (приказ от 19.06.2025 № 140)</caption>
+<thead><tr><th>Приём</th><th>Как</th><th>Пример</th><th>Метод из приказа</th></tr></thead>
+<tbody>
+<tr><td class="t">Удалить</td><td>Убрать всё, что не нужно для задачи</td><td>Телефон представителя поставщика для письма не нужен</td><td>—</td></tr>
+<tr><td class="t">Метка</td><td>Заменить на <code>[СОТРУДНИК_1]</code>, <code>[ПОСТАВЩИК_1]</code>; таблицу соответствия держать у себя</td><td>«Петров» → [СОТРУДНИК_1]</td><td>Введение идентификаторов</td></tr>
+<tr><td class="t">Обобщить</td><td>Точное → диапазон, категория, регион</td><td>«180 шт.» → «100–200 шт.»; «15.03.1987» → «1987»</td><td>Изменение состава или семантики, агрегирование</td></tr>
+<tr><td class="t">Синтетика</td><td>Отладить решение на выдуманных данных той же структуры</td><td>Таблица «Поставщик А, Б, В» для отладки формул</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warn-callout fade"><p><strong>⚠️ Главная ловушка: «попрошу нейросеть обезличить документ»</strong>Чтобы нейросеть обезличила, ей нужно отправить оригинал — утечка уже произошла. Обезличиваем у себя: «Найти и заменить» в Word, «Инспектор документов», учебный обезличиватель ниже — он работает в браузере без отправки текста.</p></div>
+<div class="viz fade">
+<div class="viz-bar">
+<div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div>
+<span class="viz-lbl">Учебный обезличиватель</span>
+<button class="viz-fs" data-fs-src="demo_obezlichivatel.html" data-fs-title="Учебный обезличиватель: метки у себя, до отправки в нейросеть" type="button">⛶ На весь экран</button>
+</div>
+<iframe data-autofit="" height="700" loading="lazy" src="demo_obezlichivatel.html" title="Учебный обезличиватель: метки у себя, до отправки в нейросеть"></iframe>
+</div>
+<p class="q-hint fade">Попробуйте: «Найти автоматически» → шаг 2 → шаг 3. Обратите внимание: фразу «единственном в отрасли стенде» автоматика не нашла — её видит только человек. А в ответе ИИ одна метка «укорочена», и обратная подстановка её не найдёт.</p>
+<div class="fine-table-wrap fade">
+<table class="fine-table">
+<caption>Где прячутся сведения, которых не видно в тексте</caption>
+<thead><tr><th>Где</th><th>Что остаётся</th><th>Как убрать</th></tr></thead>
+<tbody>
+<tr><td class="t">Имя файла</td><td>Фамилия, изделие, цех</td><td>Переименовать или вставлять текст вместо файла</td></tr>
+<tr><td class="t">Свойства Word</td><td>Автор, организация, кто последним изменял</td><td>Файл → Сведения → Поиск проблем → Проверить документ → Удалить всё</td></tr>
+<tr><td class="t">Примечания и исправления</td><td>Реплики рецензентов, удалённый текст</td><td>Рецензирование → удалить примечания; принять или отклонить исправления</td></tr>
+<tr><td class="t">Excel</td><td>Скрытые листы и столбцы, примечания</td><td>Инспектор документов; скопировать нужный диапазон значениями в новый файл</td></tr>
+<tr><td class="t">Скриншот, фото</td><td>Почта, вкладки, путь к папке, фон</td><td>Обрезать до нужного фрагмента</td></tr>
+</tbody>
+</table>
+</div>
+<div class="fine-table-wrap fade">
+<table class="fine-table">
+<caption>Настройки хранения — снижают риск, но не разрешают рабочие документы</caption>
+<thead><tr><th>Сервис</th><th>История</th><th>Обучение на диалогах</th><th>Ссылки «Поделиться»</th></tr></thead>
+<tbody>
+<tr><td>GigaChat</td><td>«Все чаты», удаление через «три точки»</td><td>В найденной справке не описано — считайте, что запросы хранятся у разработчика</td><td>Настройки → «Управление ссылками»</td></tr>
+<tr><td>Алиса AI</td><td>В диалоге: «три точки» → «Очистить историю»</td><td>Яндекс ID → «Данные» → отказ от участия в улучшении</td><td>Проверить опубликованные ответы</td></tr>
+<tr><td>ChatGPT</td><td>Боковая панель</td><td>Settings → Data Controls → Improve the model for everyone</td><td>Settings → Data Controls → Shared links</td></tr>
+<tr><td>Qwen, DeepSeek</td><td>Боковая панель</td><td>Проверить в настройках аккаунта; DeepSeek по политике даёт право отказаться</td><td>Проверить опубликованные ссылки</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<details class="details-key fade">
+<summary>Промпты для подготовки данных <span class="hint">P02, P04, P07</span></summary>
+<div class="body">
+<div class="prompt-box fade"><div class="prompt-head"><span>P02 · Сначала спроси, какие данные нужны</span><button class="copy-btn" data-copy="prompt-p02" type="button">Копировать</button></div><p class="prompt-desc">правило минимума.</p><pre id="prompt-p02">Я хочу [задача в общих словах, например: подготовить краткую справку для руководителя по итогам испытаний оборудования].
+Не проси присылать документы целиком. Сначала перечисли, какие сведения тебе минимально нужны для качественного результата.
+Для каждого сведения укажи: можно ли заменить его меткой, диапазоном или категорией — и что потеряется, если заменить.</pre></div>
+<div class="prompt-box fade"><div class="prompt-head"><span>P04 · Синтетические данные по структуре</span><button class="copy-btn" data-copy="prompt-p04" type="button">Копировать</button></div><p class="prompt-desc">чтобы тренироваться или отлаживать формулы без настоящих цифр.</p><pre id="prompt-p04">Создай учебную таблицу из [15] строк со столбцами: [названия столбцов в общих словах, например: «Позиция», «Поставщик (условный)», «Цена за единицу, руб.», «Срок поставки, дней», «Гарантия, мес.»].
+Значения — вымышленные и правдоподобные, не относящиеся к реальным организациям и изделиям. Поставщиков называй «Поставщик А», «Поставщик Б»…
+Добавь 2 строки с намеренными ошибками для тренировки проверки. Отдельно после таблицы укажи, где они.</pre></div>
+<div class="prompt-box fade"><div class="prompt-head"><span>P07 · Обобщение вместо точных значений</span><button class="copy-btn" data-copy="prompt-p07" type="button">Копировать</button></div><pre id="prompt-p07">Ты — [роль].
+Сведения в запросе обобщены: вместо точных значений даны диапазоны и категории (например, «партия 100–150 шт.», «крупный региональный центр», «срок — до месяца»).
+Работай с обобщёнными значениями и не пытайся угадать точные.
+Если для вывода точность критична — прямо напиши, какое значение и с какой точностью человеку нужно подставить самостоятельно.
+Задача: [что сделать].</pre></div>
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 7: НАЙДИТЕ 12 ══════════ -->
+<section class="sec" id="s7">
+<div class="sec-head fade">
+<div class="num-badge n7">7</div>
+<h2 class="sec-title">Практикум «Что можно загрузить в ИИ?» Найдите 12 идентификаторов </h2>
+<p class="sec-desc">Обычная служебная записка о браке. Задача — найти всё, что нужно убрать или заменить, прежде чем просить нейросеть написать претензию. Три идентификатора в тексте не видны.</p>
+</div>
+
+
+<div class="dl-grid fade">
+<a class="dl" download="" href="../data/urok3/14_SZ_Sidorenko_postavka_BP-12_ceh5.docx"><span class="ico">📘</span><div><b>14_SZ_Sidorenko_postavka_BP-12_ceh5.docx</b><span>Учебная записка: свойства файла и примечание рецензента на месте</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/urok3/14_bezopasnaya_versiya.txt"><span class="ico">🛡️</span><div><b>14_bezopasnaya_versiya.txt</b><span>Та же записка после обезличивания + таблица меток</span></div><span class="arrow">↓</span></a>
+</div>
+<div class="viz fade">
+<div class="viz-bar">
+<div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div>
+<span class="viz-lbl">Найдите 12 идентификаторов</span>
+<button class="viz-fs" data-fs-src="demo_najdi_identifikatory.html" data-fs-title="Найдите 12 идентификаторов: что выдаёт автора служебной записки" type="button">⛶ На весь экран</button>
+</div>
+<iframe data-autofit="" height="700" loading="lazy" src="demo_najdi_identifikatory.html" title="Найдите 12 идентификаторов: что выдаёт автора служебной записки"></iframe>
+</div>
+
+<details class="details-key fade">
+<summary>Разбор: 12 идентификаторов <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<div class="fine-table-wrap">
+<table class="fine-table">
+<thead><tr><th>№</th><th>Где</th><th>Что</th><th>Приём</th></tr></thead>
+<tbody>
+<tr class="hl"><td class="t">1</td><td>Имя файла</td><td>Фамилия автора, изделие, цех</td><td>Переименовать или вставлять текст</td></tr>
+<tr class="hl"><td class="t">2</td><td>Свойства файла</td><td>Автор и организация</td><td>Инспектор документов</td></tr>
+<tr class="hl"><td class="t">3</td><td>Примечание рецензента</td><td>«По НА-2 не писать — это для заказчика К.»</td><td>Удалить примечания</td></tr>
+<tr><td class="t">4</td><td>Шапка</td><td>ФИО и должность адресата</td><td>Метка или удалить</td></tr>
+<tr><td class="t">5</td><td>Шапка, подпись</td><td>ФИО автора</td><td>[СОТРУДНИК_1]</td></tr>
+<tr><td class="t">6</td><td>Шапка, подпись</td><td>Подразделение «ОТК цеха № 5»</td><td>Удалить</td></tr>
+<tr><td class="t">7</td><td>Заголовок</td><td>Номер и дата записки</td><td>[НОМЕР_1], [ДАТА_1]</td></tr>
+<tr><td class="t">8</td><td>Текст</td><td>Номер договора</td><td>[ДОГОВОР_1]</td></tr>
+<tr><td class="t">9</td><td>Текст</td><td>Контрагент</td><td>[ПОСТАВЩИК_1]</td></tr>
+<tr><td class="t">10</td><td>Текст</td><td>Комплектующее и объём партии</td><td>[КОМПЛЕКТУЮЩЕЕ_1], [КОЛИЧЕСТВО_1] из [КОЛИЧЕСТВО_2]</td></tr>
+<tr><td class="t">11</td><td>Текст</td><td>ФИО и телефон представителя поставщика — ПДн третьего лица</td><td>Удалить: для письма не нужны</td></tr>
+<tr><td class="t">12</td><td>Подпись</td><td>Адрес почты</td><td>Удалить</td></tr>
+</tbody>
+</table>
+</div>
+<p class="verdict">Вывод: три скрытых идентификатора находит меньшинство. Вставка текста вместо файла или пересоздание документа убирает скрытое разом.</p>
+</div>
+</details>
+</section>
+<!-- ══════════ БЛОК 8: ДЕМОНСТРАЦИЯ «МЕТКИ» ══════════ -->
+<section class="sec" id="s8">
+<div class="sec-head fade">
+<div class="num-badge n8">8</div>
+<h2 class="sec-title">Эксперимент «Метки»: один промпт в разных моделях</h2>
+<p class="sec-desc">Данные подготовлены правильно. Проверьте, как с ними обращаются разные модели: сохранят ли метки или «помогут» и додумают. Скопируйте промпт в GigaChat, Алису AI или Qwen и отметьте результат в табло.</p>
+</div>
+
+<div class="prompt-box fade">
+<div class="prompt-head"><span>Демонстрационный промпт «Метки»</span><button class="copy-btn" data-copy="prompt-demo" type="button">Копировать</button></div>
+<pre id="prompt-demo">Ты — специалист по претензионной работе промышленного предприятия: вежливый, но твёрдый тон, без обещаний и условий, которых нет в тексте.
+В тексте ниже реальные имена, организации, номера документов и количества заменены метками вида [СОТРУДНИК_1], [ПОСТАВЩИК_1], [ДОГОВОР_1], [КОЛИЧЕСТВО_1].
+Правила: 1) каждую метку сохраняй символ в символ; 2) не придумывай значения для меток; 3) не добавляй новых дат, сумм, сроков и условий.
+Задача: составь черновик претензии поставщику.
+Текст:
+Служебная записка [НОМЕР_1] от [ДАТА_1].
+При входном контроле партии [КОМПЛЕКТУЮЩЕЕ_1], поставленной по договору [ДОГОВОР_1] с [ПОСТАВЩИК_1], выявлены несоответствующие изделия: [КОЛИЧЕСТВО_1] из [КОЛИЧЕСТВО_2]. Изделия не выдерживают проверку выходного напряжения под нагрузкой.
+Требуется претензия поставщику: замена несоответствующих изделий в срок [СРОК_1] и предложение составить совместный акт.
+Автор: [СОТРУДНИК_1].</pre>
+</div>
+
+<div class="fine-table-wrap fade">
+<table class="fine-table board" id="board">
+<caption>Табло сравнения — нажимайте на ячейку: «?» → «✓ нет ошибки» → «✗ ошибка»</caption>
+<thead><tr><th>Что проверяем</th><th>GigaChat</th><th>Алиса AI</th><th>Qwen</th><th>ChatGPT</th></tr></thead>
+<tbody>
+<tr><td>Все метки на месте, ни одна не изменена</td><td><button aria-label="GigaChat: метки" class="cell" type="button">?</button></td><td><button aria-label="Алиса AI: метки" class="cell" type="button">?</button></td><td><button aria-label="Qwen: метки" class="cell" type="button">?</button></td><td><button aria-label="ChatGPT: метки" class="cell" type="button">?</button></td></tr>
+<tr><td>Нет выдуманных сроков и дат</td><td><button aria-label="GigaChat: сроки" class="cell" type="button">?</button></td><td><button aria-label="Алиса AI: сроки" class="cell" type="button">?</button></td><td><button aria-label="Qwen: сроки" class="cell" type="button">?</button></td><td><button aria-label="ChatGPT: сроки" class="cell" type="button">?</button></td></tr>
+<tr><td>Нет условий договора, которых не было в тексте</td><td><button aria-label="GigaChat: условия" class="cell" type="button">?</button></td><td><button aria-label="Алиса AI: условия" class="cell" type="button">?</button></td><td><button aria-label="Qwen: условия" class="cell" type="button">?</button></td><td><button aria-label="ChatGPT: условия" class="cell" type="button">?</button></td></tr>
+<tr><td>Не восстановлены убранные детали — должность, подразделение</td><td><button aria-label="GigaChat: детали" class="cell" type="button">?</button></td><td><button aria-label="Алиса AI: детали" class="cell" type="button">?</button></td><td><button aria-label="Qwen: детали" class="cell" type="button">?</button></td><td><button aria-label="ChatGPT: детали" class="cell" type="button">?</button></td></tr>
+</tbody>
+</table>
+</div>
+<details class="ready fade">
+<summary>Типичный ответ ИИ на этот промпт <span class="hint">пример с тремя ошибками — найдите их</span></summary>
+<div class="body">
+<pre id="ready-15">УЧЕБНЫЙ МАТЕРИАЛ · СИНТЕТИЧЕСКИЕ ДАННЫЕ · не относятся к реальному предприятию
+Урок 3 · демонстрация «Метки»
+Типичный ответ ИИ на демонстрационный промпт — заготовлен для показа, если сервис недоступен или модель ответила иначе.
+
+ПРЕТЕНЗИЯ
+
+Руководителю [ПОСТАВЩИК_1]
+
+Уважаемые коллеги!
+
+При входном контроле партии [КОМПЛЕКТУЮЩЕЕ_1], поставленной по договору [ДОГОВОР_1], выявлены несоответствующие изделия в количестве [КОЛИЧЕСТВО_1] из [КОЛИЧЕСТВО_2]: изделия не выдерживают проверку выходного напряжения под нагрузкой.
+
+Просим в течение 10 рабочих дней заменить несоответствующие изделия на изделия надлежащего качества.
+
+В соответствии с п. 7.2 договора за нарушение сроков замены поставщик уплачивает неустойку в размере 0,1 % от стоимости партии за каждый день просрочки.
+
+Предлагаем составить совместный акт о выявленных несоответствиях с участием представителя [ПОСТАВЩИК_1].
+
+С уважением,
+[СОТРУДНИК_1]
+инженер ОТК</pre>
+
+<div class="errors">
+<b>Что найти</b>
+<ul>
+<li><b>«в течение 10 рабочих дней»</b> — метка [СРОК_1] пропала, срок выдуман. Вернуть метку: срок подставит человек.</li>
+<li><b>«В соответствии с п. 7.2 договора за нарушение сроков замены поставщик уплачивает неустойку в размере 0,1 %…»</b> — условия договора, которого не было в тексте. Отправив такую претензию, предприятие сошлётся на несуществующий пункт.</li>
+<li><b>«инженер ОТК»</b> — модель восстановила должность, которую мы убрали: догадка по контексту.</li>
+</ul>
+</div>
+</div>
+</details>
+<details class="details-key fade">
+<summary>Промпт P19 «Самопроверка» <span class="hint">если опережаете: сколько из трёх ошибок модель найдёт сама</span></summary>
+<div class="body">
+<div class="prompt-box fade"><div class="prompt-head"><span>P19 · Самопроверка ответа</span><button class="copy-btn" data-copy="prompt-p19" type="button">Копировать</button></div><p class="prompt-desc">связь с уроком 2.</p><pre id="prompt-p19">Проверь свой предыдущий ответ.
+1) Какие утверждения не опираются на текст, который я дал? Выпиши их.
+2) Какие даты, числа, названия и ссылки ты добавил сам?
+3) Какие метки в квадратных скобках изменены или пропали?
+Формат: таблица «Фрагмент · Проблема · Что сделать». Ничего не исправляй, пока я не подтвержу.</pre></div>
+<p class="verdict">Обычно самопроверка находит одну-две проблемы из трёх — хорошая иллюстрация, что самопроверка ИИ не заменяет человека.</p>
+</div>
+</details>
+<details class="details-key fade">
+<summary>Вывод <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<p>Мы всё сделали правильно, а модель всё равно вернула должность, которую мы убрали, и добавила условия. Разные модели ошибаются по-разному — ни одна не гарантирует аккуратности.</p>
+<p class="verdict">Вывод: обезличивание проверяют дважды — в запросе и в ответе. Метки возвращаем на место у себя в документе, а не в чате.</p>
+</div>
+</details>
+</section>
+<!-- ══════════ БЛОК 9: РОЛЬ В ПРОМПТЕ ══════════ -->
+<section class="sec" id="s9">
+<div class="sec-head fade">
+<div class="num-badge n9">9</div>
+<h2 class="sec-title">Роль в промпте: угол зрения, а не знания </h2>
+<p class="sec-desc">Роль задаёт угол зрения, критерии и тон. Она не добавляет знаний, не даёт права на данные и не переносит на ИИ ответственность. Подробно промпты разбираем в разделе 3.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Тот же запрос — без утечек»: было — претензия в ООО «Поставщик-Альфа» по договору № 45/2026, брак 14 из 200, звонить Смирновой; стало — роль специалиста по претензионной работе, правило меток, задача с [ПОСТАВЩИК_1], [ДОГОВОР_1], [КОЛИЧЕСТВО_1], [КОЛИЧЕСТВО_2] и проверка; роль задаёт угол зрения — но не знания и не право на данные" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/09_tot_zhe_zapros_bez_utechek.jpg"/>
+<figcaption class="img-missing-caption">Слайд 09 «Тот же запрос — без утечек»</figcaption>
+</figure>
+<div class="card fade">
+<h3>💡 Метафора: бейдж на конференции</h3>
+<p style="font-size:.95rem;line-height:1.7">Надпись «эксперт» на бейдже не делает человека экспертом, но подсказывает, какие вопросы ему задавать и каких ответов ждать. В исследовании Zheng и соавторов (<a class="svc-link" href="https://aclanthology.org/2024.findings-emnlp.888/" rel="noopener" target="_blank">EMNLP 2024</a>) 162 роли на 2 410 фактических вопросах не повысили точность ответов.</p>
+</div>
+<div class="prompt-box fade"><div class="prompt-head"><span>P01 · Рамка безопасного запроса</span><button class="copy-btn" data-copy="prompt-p01" type="button">Копировать</button></div><p class="prompt-desc">универсальный каркас, продолжение MEGA-промпта из урока 1.</p><pre id="prompt-p01">Роль: Ты — [роль с критериями, например: редактор деловой переписки промышленного предприятия].
+Контекст: [ситуация в общих словах, без названий изделий, объектов, организаций и людей].
+Данные: имена, организации, номера и суммы заменены метками вида [СОТРУДНИК_1], [ОРГАНИЗАЦИЯ_1], [СУММА_1]. Сохраняй метки без изменений и не подставляй вместо них реальные или правдоподобные значения.
+Задача: [что сделать].
+Ограничения: не добавляй фактов, дат, сроков и условий, которых нет в тексте. Если сведений не хватает — задай вопрос, а не додумывай.
+Формат: [таблица / список / черновик письма объёмом до … слов].
+Проверка: в конце отдельным списком перечисли места, которые человек должен проверить перед использованием.</pre></div>
+<div class="viz fade">
+<div class="viz-bar">
+<div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div>
+<span class="viz-lbl">Подбери роль в промпте</span>
+<button class="viz-fs" data-fs-src="demo_rol_v_prompte.html" data-fs-title="Роль в промпте: угол зрения, а не знания и не право на данные" type="button">⛶ На весь экран</button>
+</div>
+<iframe data-autofit="" height="760" loading="lazy" src="demo_rol_v_prompte.html" title="Роль в промпте: угол зрения, а не знания и не право на данные"></iframe>
+</div>
+
+<details class="details-key fade">
+<summary>Промпты с ролями <span class="hint">P08, P09, P10 — для самостоятельной работы</span></summary>
+<div class="body">
+<div class="prompt-box fade"><div class="prompt-head"><span>P08 · Редактор с метками</span><button class="copy-btn" data-copy="prompt-p08" type="button">Копировать</button></div><pre id="prompt-p08">Ты — редактор деловой переписки промышленного предприятия. Твоя задача — стиль, ясность и структура, а не содержание.
+Отредактируй текст: убери канцелярит и повторы, сделай тон вежливым и деловым, сохрани все факты и все метки в квадратных скобках без изменений.
+Не добавляй новых фактов. Формат: исправленный текст, затем список правок из 3–5 пунктов.
+Текст: [ОБЕЗЛИЧЕННЫЙ ТЕКСТ]</pre></div>
+<div class="prompt-box fade"><div class="prompt-head"><span>P09 · Наставник без расчёта</span><button class="copy-btn" data-copy="prompt-p09" type="button">Копировать</button></div><p class="prompt-desc">роль ИИ «консультант».</p><pre id="prompt-p09">Ты — опытный наставник-инженер. Я решаю задачу сам, ты помогаешь думать.
+Задача в общих словах: [например: проверить чужой расчёт грузоподъёмного приспособления перед подписью].
+Составь план проверки: какие исходные данные сверить, какие типовые ошибки поискать, какие нормативы открыть.
+Сам не считай, числа не предлагай, вывод «выдержит / не выдержит» не делай. Если я попрошу посчитать — напомни, что это решает специалист.</pre></div>
+<div class="prompt-box fade"><div class="prompt-head"><span>P10 · Оппонент</span><button class="copy-btn" data-copy="prompt-p10" type="button">Копировать</button></div><pre id="prompt-p10">Ты — придирчивый оппонент на техническом совете. Факты не придумывай и не проверяй — оценивай логику и полноту.
+Прочитай черновик и назови 5 самых слабых мест: где вывод не следует из данных, чего не хватает, какие вопросы зададут первыми.
+Формат: таблица «Фрагмент · Слабое место · Вопрос, который зададут · Что добавить».
+Черновик: [ОБЕЗЛИЧЕННЫЙ ТЕКСТ]</pre></div>
+</div>
+</details>
+<details class="details-key fade">
+<summary>Ответ к заданию 1 <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<p><b>Б</b> — «специалист по претензионной работе: вежливый, но твёрдый тон, без обещаний сроков, которых нет в фактах». А — всезнайка без критериев, В — подписант: «окончательную» претензию делает человек.</p>
+<p class="verdict">Роль в промпте согласуем с ролью ИИ в задаче из урока 2: консультанту — роль наставника, который не считает за вас.</p>
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 10: КАРТА НЕЙРОСЕТЕЙ ══════════ -->
+<section class="sec" id="s10">
+<div class="sec-head fade">
+<div class="num-badge n10">10</div>
+<h2 class="sec-title">Карта нейросетей: какие задачи какой модели </h2>
+<p class="sec-desc">Нет лучшей нейросети «для всего». Выбор — это задача × данные × доступ. Подробный выбор инструмента — в разделе 6.</p>
+</div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Нет лучшей нейросети для всего»: российские GigaChat и Алиса AI сильны в текстах на русском и российском контексте, данные остаются в РФ; зарубежные ChatGPT, Claude, Gemini, DeepSeek, Qwen сильнее в длинных документах, логике и коде, данные за рубежом; выбор = задача × данные × доступ" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/10_vybor_zadacha_dannye_dostup.jpg"/>
+<figcaption class="img-missing-caption">Слайд 10 «Нет лучшей нейросети для всего»</figcaption>
+</figure>
+<div class="viz fade">
+<div class="viz-bar">
+<div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div>
+<span class="viz-lbl">Карта нейросетей</span>
+<button class="viz-fs" data-fs-src="demo_karta_servisov.html" data-fs-title="Карта нейросетей: выбор = задача × данные × доступ" type="button">⛶ На весь экран</button>
+</div>
+<iframe data-autofit="" height="760" loading="lazy" src="demo_karta_servisov.html" title="Карта нейросетей: выбор = задача × данные × доступ"></iframe>
+</div>
+<p class="q-hint fade">Попробуйте: задача «Письмо, записка» + «Обезличенное описание» → затем переключите на «Рабочий документ». Сила модели не меняется, а нижняя строка карточки становится красной у всех.</p>
+<div class="grid fade">
+<div class="card">
+<p class="c-name">MERA 2.0 · русскоязычный бенчмарк</p>
+<p>Лидеры: Gemini 3.7 Flash, GPT 5.6 Sol, Claude Opus 5. Лучший российский результат — GigaChat 3.5 Reasoning: 13-е место из 39 и 7-е в группе «Российский контекст». Модели решают закрытый набор задач через API. <a class="svc-link" href="https://mera.a-ai.ru/ru/text/leaderboard" rel="noopener" target="_blank">mera.a-ai.ru</a>, выгрузка 15.09.2026.</p>
+</div>
+<div class="card">
+<p class="c-name">LLM Arena · слепые голосования на русском</p>
+<p>GigaChat 3.5 — 7-е место, рядом с GPT-5.2 и DeepSeek V3.2; Alice AI LLM — 19-е. 157 тысяч голосов, 112 моделей. «Нравится людям» ≠ «точно». <a class="svc-link" href="https://llmarena.ru/" rel="noopener" target="_blank">llmarena.ru</a>, обновление 13.09.2026.</p>
+</div>
+</div>
+<div class="card fade">
+<h3>Вопрос для размышления</h3>
+<ul class="q-list"><li>Для вашей самой частой задачи — какую модель вы бы выбрали и что меняет строка «Рабочие данные сюда»?</li></ul>
+</div>
+
+<details class="details-key fade">
+<summary>Три вывода <span class="hint">сначала подумайте сами</span></summary>
+<div class="body">
+<ol style="padding-left:20px;display:flex;flex-direction:column;gap:6px">
+<li><b>По силе</b> мировые лидеры впереди, особенно в длинных документах, логике и коде. Российские — наравне в текстах на русском и сильнее в российском контексте.</li>
+<li><b>По данным</b> для рабочих задач выбор делает не рейтинг, а правило данных: во внешние сервисы — только открытое, учебное и обезличенное.</li>
+<li><b>Для настоящих рабочих документов</b> — только корпоративный инструмент, который разрешила организация. Если его нет, ИИ помогает с шаблоном, структурой и формулами, а данные вы подставляете сами.</li>
+</ol>
+<div class="prompt-box fade"><div class="prompt-head"><span>P05 · Шаблон вместо документа</span><button class="copy-btn" data-copy="prompt-p05" type="button">Копировать</button></div><pre id="prompt-p05">Ты — специалист по документационному обеспечению.
+Составь шаблон [протокола совещания / служебной записки / выжимки отчёта на 1 страницу для руководителя].
+Все сведения, которые зависят от конкретной ситуации, оформи полями в квадратных скобках с подсказкой, что туда вписать.
+Реальные сведения я заполню сам, без нейросети. Формат: готовый к копированию в Word текст.</pre></div>
+<div class="prompt-box fade"><div class="prompt-head"><span>P06 · Формулы вместо чисел</span><button class="copy-btn" data-copy="prompt-p06" type="button">Копировать</button></div><pre id="prompt-p06">Ты — аналитик, который строит модели сравнения в Excel.
+Помоги сделать лист сравнения [коммерческих предложений на оборудование] по критериям: [цена, срок поставки, гарантия, соответствие требованию ТЗ].
+Веса критериев задаю я: [перечень весов].
+Дай: структуру листа (какие столбцы), формулы для взвешенного балла и проверки требования ТЗ, условное форматирование.
+Реальные цены и названия я вставлю сам. Не придумывай примеры поставщиков с реальными названиями.</pre></div>
+</div>
+</details>
+
+</section>
+<!-- ══════════ БЛОК 11: ИТОГ, EXIT TICKET, ДЗ ══════════ -->
+<section class="sec" id="s11">
+<div class="sec-head fade">
+<div class="num-badge n11">11</div>
+<h2 class="sec-title">Итог, exit ticket и ДЗ-1 </h2>
+<p class="sec-desc">Три вопроса из четырёх мы разобрали. Четвёртый — кто проверит результат и отвечает за него — в следующем уроке, вместе с правом, дипфейками и мошенниками.</p>
+</div>
+<div class="formula fade">
+<div class="f"><span>ЧТО</span> → <span>КУДА</span> → <span>КАК</span> → <span style="opacity:.55">КТО</span></div>
+<p>Что за данные? · Куда отправляю? · Как подготовил? · Кто проверит и отвечает — урок 4. Дальше — формула урока 2: задача → роль ИИ → результат → проверка → человек.</p>
+</div>
+
+<div class="card fade">
+<h3>ДЗ-1 · «Паспорт безопасной задачи» · 40–50 минут</h3>
+<ol class="step-list">
+<li>Выберите одну свою рабочую задачу — подойдёт та, что описывали в уроке 2.</li>
+<li>Опишите её в общих словах: что за работа, но не над чем именно.</li>
+<li>Заполните в шаблоне поля ЧТО · КУДА · КАК. Не знаете, есть ли корпоративный ИИ, — пишите «уточнить у ИТ/ИБ».</li>
+<li>Подготовьте безопасную версию данных <b>без нейросети</b>: «Найти и заменить», свойства файла.</li>
+<li>Возьмите промпт P01–P07, запустите в разрешённом сервисе и запишите, что ИИ добавил от себя.</li>
+<li>Часть 2 · 15 минут: «Гигиена аккаунта» — второй лист шаблона.</li>
+</ol>
+<p class="q-hint">Сдавать — через разрешённый в организации канал: корпоративная почта или учебная система, не личные мессенджеры. В карточке не должно быть ни одного реального названия, ФИО, номера и числа из рабочих документов.</p>
+</div>
+<div class="dl-grid fade">
+<a class="dl" download="" href="../data/urok3/16_pasport_bezopasnoy_zadachi_shablon.xlsx"><span class="ico">📗</span><div><b>16_pasport_bezopasnoy_zadachi_shablon.xlsx</b><span>ДЗ-1: паспорт с образцом + гигиена аккаунта</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/urok3/prompty_urok3.md"><span class="ico">📄</span><div><b>prompty_urok3.md</b><span>12 промптов урока читаемым списком</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/05_bezopasnye_shablony_promptov.pdf"><span class="ico">🖨️</span><div><b>05_bezopasnye_shablony_promptov.pdf</b><span>Шаблоны P01–P07 для печати</span></div><span class="arrow">↓</span></a>
+</div>
+<details class="details-key fade">
+<summary>Шаблон P03 «Работа с метками» <span class="hint">основной шаблон ДЗ</span></summary>
+<div class="body">
+<div class="prompt-box fade"><div class="prompt-head"><span>P03 · Работа с метками</span><button class="copy-btn" data-copy="prompt-p03" type="button">Копировать</button></div><pre id="prompt-p03">Ты — [роль]. В тексте ниже реальные имена, организации, номера документов и суммы заменены метками вида [СОТРУДНИК_1], [ОРГАНИЗАЦИЯ_1], [ДОГОВОР_1], [СУММА_1].
+Правила: 1) каждую метку сохраняй символ в символ; 2) не придумывай значения для меток; 3) не добавляй новых дат, сумм и условий.
+Задача: [что сделать с текстом].
+Текст:
+[ОБЕЗЛИЧЕННЫЙ ТЕКСТ]</pre></div>
+</div>
+</details>
+<div class="card fade">
+<h3>Что будет дальше</h3>
+<ul class="q-list after">
+<li>Авторское право, дипфейки, фишинг и «если уже загрузил» — урок 4. Памятка 4 уже лежит в файлах.</li>
+<li>Конструкция промпта: цель, контекст, примеры, цепочки — раздел 3.</li>
+<li>Подробный выбор инструмента «задача — данные — инструмент — риски — контроль» — раздел 6.</li>
+<li>Внутренние правила конкретного предприятия — вопрос к службе информационной безопасности.</li>
+</ul>
+</div>
+</section>
+<!-- ══════════ ПАМЯТКИ И ФАЙЛЫ ══════════ -->
+<section class="sec" id="dl">
+<div class="sec-head fade">
+<div class="num-badge n0">↓</div>
+<h2 class="sec-title">Памятки и файлы для скачивания</h2>
+<p class="sec-desc">PDF — чтобы распечатать и повесить у рабочего места. DOCX — чтобы адаптировать под правила своего предприятия. Все учебные данные синтетические.</p>
+</div>
+<div class="dl-grid fade">
+<a class="dl" download="" href="../data/pamyatki/01_pered_otpravkoy_v_neyroset.pdf"><span class="ico">🚦</span><div><b>Памятка 1 · Перед тем как нажать «Отправить»</b><span>PDF · лестница данных, три правила, 8 вопросов</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/02_neyroseti_i_dannye.pdf"><span class="ico">🗺️</span><div><b>Памятка 2 · Нейросети и данные: что куда можно</b><span>PDF · 4 класса, условия 7 сервисов, матрица</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/03_kak_podgotovit_dannye.pdf"><span class="ico">🛡️</span><div><b>Памятка 3 · Как подготовить данные</b><span>PDF · 4 приёма, скрытое в файлах, проверка дважды</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/04_esli_dannye_uzhe_otpravleny.pdf"><span class="ico">🆘</span><div><b>Памятка 4 · Если данные уже отправлены</b><span>PDF · 5 шагов, шаблон сообщения, где удалить чат</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/05_bezopasnye_shablony_promptov.pdf"><span class="ico">⌨️</span><div><b>Памятка 5 · Безопасные шаблоны промптов</b><span>PDF · P01–P07 и правило роли</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/urok3_dannye.zip"><span class="ico">🗜️</span><div><b>urok3_dannye.zip</b><span>Все файлы урока и памятки (PDF + DOCX) одним архивом</span></div><span class="arrow">↓</span></a>
+</div>
+<div class="dl-grid fade">
+<a class="dl" download="" href="../data/pamyatki/01_pered_otpravkoy_v_neyroset.docx"><span class="ico">📝</span><div><b>01_pered_otpravkoy_v_neyroset.docx</b><span>Памятка 1 · редактируемая</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/02_neyroseti_i_dannye.docx"><span class="ico">📝</span><div><b>02_neyroseti_i_dannye.docx</b><span>Памятка 2 · редактируемая</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/03_kak_podgotovit_dannye.docx"><span class="ico">📝</span><div><b>03_kak_podgotovit_dannye.docx</b><span>Памятка 3 · редактируемая</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/04_esli_dannye_uzhe_otpravleny.docx"><span class="ico">📝</span><div><b>04_esli_dannye_uzhe_otpravleny.docx</b><span>Памятка 4 · редактируемая</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/pamyatki/05_bezopasnye_shablony_promptov.docx"><span class="ico">📝</span><div><b>05_bezopasnye_shablony_promptov.docx</b><span>Памятка 5 · редактируемая</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/urok3/prompty_urok3.csv"><span class="ico">📥</span><div><b>prompty_urok3.csv</b><span>Промпты для импорта в менеджер промптов</span></div><span class="arrow">↓</span></a>
+<a class="dl" download="" href="../data/urok3/prompty_urok3.json"><span class="ico">🧾</span><div><b>prompty_urok3.json</b><span>Те же промпты в JSON</span></div><span class="arrow">↓</span></a>
+</div>
+</section>
+<!-- ══════════ ЧЕК-ЛИСТ ПРЕПОДАВАТЕЛЯ ══════════ -->
+
+<!-- ══════════ КВИЗ ══════════ -->
+<section class="sec" id="checklist">
+<div class="sec-head fade">
+<div class="num-badge n10">✓</div>
+<h2 class="sec-title">Чек-лист «Перед тем как нажать «Отправить»»</h2>
+<p class="sec-desc">Пройдите перед каждым запросом с рабочими сведениями. Отметки сохраняются в вашем браузере.</p>
+</div>
+<div class="card fade">
+<div class="checklist-progress-bar"><div class="checklist-progress-fill" id="checklist-progress"></div></div>
+<ul class="checklist-items">
+<li><label><input data-checklist-item="c1" type="checkbox"/> Нужны ли ИИ эти данные для задачи — или хватит описания в общих словах?</label></li>
+<li><label><input data-checklist-item="c2" type="checkbox"/> Определил ступень лестницы: открытые · учебные · обезличенные · внутренние · конфиденциальные</label></li>
+<li><label><input data-checklist-item="c3" type="checkbox"/> Этот сервис разрешён для таких данных правилами моей организации</label></li>
+<li><label><input data-checklist-item="c4" type="checkbox"/> Убрал имена, организации, номера, точные числа и уникальные детали</label></li>
+<li><label><input data-checklist-item="c5" type="checkbox"/> Не пересказываю своими словами то, что нельзя загружать файлом</label></li>
+<li><label><input data-checklist-item="c6" type="checkbox"/> Вставляю текст, а не файл; если файл — проверил свойства, примечания и имя</label></li>
+<li><label><input data-checklist-item="c7" type="checkbox"/> На скриншоте нет лишнего: почты, путей к папкам, чужих окон</label></li>
+<li><label><input data-checklist-item="c8" type="checkbox"/> Посторонний не поймёт, о ком и о чём речь</label></li>
+</ul>
+<p class="checklist-done" hidden="" id="checklist-done">Можно отправлять. Сомневаетесь хоть в одном пункте — считайте данные «красными».</p>
+</div>
+</section><section class="sec" id="quiz">
+<div class="sec-head fade">
+<div class="num-badge n11">?</div>
+<h2 class="sec-title">Проверьте себя</h2>
+<p class="sec-desc">Восемь вопросов с разбором. Правильный вариант подсвечивается после ответа — даже если вы ошиблись.</p>
+</div>
+<div class="quiz fade">
+<div class="quiz-question" data-quiz="1">
+<p class="quiz-text">1. Инженер не загружал паспорт изделия, а пересказал характеристики своими словами и попросил нейросеть сравнить их с аналогами. Это допустимо?</p>
+<div class="quiz-options">
+<label><input name="q1" type="radio" value="wrong"/> Да, ведь файл не загружали</label>
+<label><input name="q1" type="radio" value="wrong"/> Да, если сервис российский</label>
+<label><input name="q1" type="radio" value="right"/> Нет: пересказ — тоже передача, секретны сами характеристики</label>
+</div>
+<button class="quiz-check" data-quiz-check="1" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="1" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="2">
+<p class="quiz-text">2. Внутренний регламент без грифа нужно превратить в чек-лист. Что делает загрузку в публичный российский чат-бот допустимой?</p>
+<div class="quiz-options">
+<label><input name="q2" type="radio" value="wrong"/> Данные остаются в России</label>
+<label><input name="q2" type="radio" value="wrong"/> Отключённое обучение на диалогах</label>
+<label><input name="q2" type="radio" value="right"/> Ни то ни другое: нужен инструмент, который организация разрешила для внутренних документов</label>
+</div>
+<button class="quiz-check" data-quiz-check="2" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="2" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="3">
+<p class="quiz-text">3. Коллега предлагает: «Попросим нейросеть обезличить служебную записку, а потом поработаем с обезличенной». Что не так?</p>
+<div class="quiz-options">
+<label><input name="q3" type="radio" value="wrong"/> Нейросеть плохо обезличивает</label>
+<label><input name="q3" type="radio" value="right"/> Чтобы нейросеть обезличила, ей придётся отправить оригинал — утечка уже произошла</label>
+<label><input name="q3" type="radio" value="wrong"/> Всё так, это экономит время</label>
+</div>
+<button class="quiz-check" data-quiz-check="3" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="3" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="4">
+<p class="quiz-text">4. Вы удалили из текста служебной записки все ФИО. Где ваше ФИО может остаться?</p>
+<div class="quiz-options">
+<label><input name="q4" type="radio" value="wrong"/> Нигде</label>
+<label><input name="q4" type="radio" value="right"/> В свойствах файла, примечаниях рецензента, имени файла</label>
+<label><input name="q4" type="radio" value="wrong"/> Только в подписи</label>
+</div>
+<button class="quiz-check" data-quiz-check="4" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="4" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="5">
+<p class="quiz-text">5. Вы выключили в настройках сервиса использование диалогов для обучения. Что это значит?</p>
+<div class="quiz-options">
+<label><input name="q5" type="radio" value="wrong"/> Можно загружать рабочие документы</label>
+<label><input name="q5" type="radio" value="right"/> Модель не учится на ваших диалогах, но они по-прежнему хранятся на серверах сервиса</label>
+<label><input name="q5" type="radio" value="wrong"/> Диалоги сразу удаляются</label>
+</div>
+<button class="quiz-check" data-quiz-check="5" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="5" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="6">
+<p class="quiz-text">6. Пять открытых новостей о поставщиках предприятия свели в одну таблицу «кто, что и когда поставляет». Почему это может стать закрытой информацией?</p>
+<div class="quiz-options">
+<label><input name="q6" type="radio" value="wrong"/> Не может: все источники открытые</label>
+<label><input name="q6" type="radio" value="right"/> Мозаика: сводка даёт новые сведения, которых нет ни в одной новости по отдельности</label>
+<label><input name="q6" type="radio" value="wrong"/> Только если таблицу сделала зарубежная нейросеть</label>
+</div>
+<button class="quiz-check" data-quiz-check="6" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="6" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="7">
+<p class="quiz-text">7. Для каких целей условия «Алисы AI» (п. 5.1) предоставляют сервис?</p>
+<div class="quiz-options">
+<label><input name="q7" type="radio" value="wrong"/> Для работы с корпоративными документами</label>
+<label><input name="q7" type="radio" value="right"/> Для некоммерческого использования в домашних условиях, для развлекательных целей</label>
+<label><input name="q7" type="radio" value="wrong"/> Для любых целей, если выключить улучшение сервиса</label>
+</div>
+<button class="quiz-check" data-quiz-check="7" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="7" hidden=""></p>
+</div>
+<div class="quiz-question" data-quiz="8">
+<p class="quiz-text">8. Промпт начинается словами «Ты — профессор, эксперт по договорам». Что это даёт?</p>
+<div class="quiz-options">
+<label><input name="q8" type="radio" value="wrong"/> Модель будет точнее в фактах</label>
+<label><input name="q8" type="radio" value="wrong"/> Можно вставить реальный договор: модель же эксперт</label>
+<label><input name="q8" type="radio" value="right"/> Угол зрения, критерии и тон — но не знания, не право на данные и не ответственность</label>
+</div>
+<button class="quiz-check" data-quiz-check="8" type="button">Проверить</button>
+<p class="quiz-feedback" data-quiz-feedback="8" hidden=""></p>
+</div>
+</div>
+<p class="quiz-score-box fade" id="quiz-score" style="margin-top:18px">Отвечено: 0 / 8</p>
+</section>
+<!-- ══════════ ЗАКЛЮЧЕНИЕ ══════════ -->
+
+
+<section class="sec" id="final">
+<div class="sec-head fade">
+<div class="num-badge n9">★</div>
+<h2 class="sec-title">Что забрать с собой</h2>
+</div>
+<ol class="conclusion-list fade">
+<li><strong>Утечка — это вежливая просьба с лишним.</strong> ФИО, контрагент, номер договора, объёмы и чужой телефон уходят вместе с просьбой о письме.</li>
+<li><strong>Данные — лестница.</strong> В публичную нейросеть — только открытое и учебное; обезличенное — если разрешают правила организации.</li>
+<li><strong>Передать можно не только файлом.</strong> Пересказ, скриншот, фото и мозаика из открытых кусочков — тоже передача.</li>
+<li><strong>Российский сервис ≠ разрешение.</strong> Условия «Алисы AI» называют её сервисом для развлекательных целей, GigaChat запрещает ПДн третьих лиц, а суд признал загрузку отчётов разглашением.</li>
+<li><strong>Готовим у себя и проверяем дважды.</strong> Минимум данных, четыре приёма, скрытое в файлах — до отправки; метки и додуманные детали — в ответе.</li>
+<li><strong>Роль в промпте — угол зрения, а не права.</strong> Она не добавляет знаний и не разрешает данные.</li>
+<li><strong>Выбор = задача × данные × доступ.</strong> Для рабочих документов решает не рейтинг, а разрешённый организацией инструмент.</li>
+</ol>
+<p class="q-hint fade">Следующее занятие — урок 4: кто отвечает за результат ИИ, авторское право, дипфейки, фишинг и маршрут безопасной задачи целиком.</p>
+</section>
+</main>
+
+
+<div class="overlay" id="lightbox" aria-hidden="true">
+  <a class="overlay-download" id="lightbox-download" download aria-label="Скачать изображение">⬇ Скачать</a>
+  <button class="overlay-close" id="lightbox-close" aria-label="Закрыть">✕</button>
+  <img id="lightbox-img" alt="">
+</div>
+
+<div id="fs-overlay" aria-hidden="true">
+  <div id="fs-bar">
+    <span id="fs-title"></span>
+    <button type="button" id="fs-close" aria-label="Закрыть полноэкранный режим">✕</button>
+  </div>
+  <iframe id="fs-frame" title="Полноэкранная демонстрация"></iframe>
+</div>
+
+<footer>
+  <p>Урок 3 «Данные и ИИ: что можно отправить и куда» · Раздел 2 «Безопасная работа с ИИ» · ДПО-1 · Клуб «ИИ в образовании» · 2026</p>
+  <p style="margin-top:6px">Все данные на странице и в файлах — синтетические учебные. Условия сервисов проверены по открытым источникам 15.09.2026.</p>
+  <p style="margin-top:6px">Учебный материал не заменяет политику информационной безопасности Концерна ВКО «Алмаз – Антей» и локальные акты предприятия.</p>
+</footer>
+
+<script>
+/* Префикс имени файла при скачивании слайдов */
+const BRAND = "dpo1-urok3";
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!reduceMotion && "IntersectionObserver" in window) {
+  const reveal = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add("in"); reveal.unobserve(entry.target); }
+    });
+  }, {threshold: 0.06, rootMargin: "0px 0px -24px"});
+  document.querySelectorAll(".fade").forEach((element) => reveal.observe(element));
+} else {
+  document.querySelectorAll(".fade").forEach((element) => element.classList.add("in"));
+}
+
+/* Подсветка активной секции в навбаре */
+const navLinks = [...document.querySelectorAll(".nav-link")];
+const sections = [...document.querySelectorAll("main section[id]")];
+if ("IntersectionObserver" in window) {
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`));
+    });
+  }, {rootMargin: "-35% 0px -55%", threshold: 0});
+  sections.forEach((section) => sectionObserver.observe(section));
+}
+
+/* Лайтбокс */
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxDownload = document.getElementById("lightbox-download");
+document.querySelectorAll(".img-card[data-lightbox]").forEach((card) => {
+  card.addEventListener("click", () => {
+    if (card.classList.contains("img-missing")) return;
+    const img = card.querySelector("img");
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightboxDownload.href = img.src;
+    lightboxDownload.download = `${BRAND}_${img.src.split("/").pop().split("?")[0]}`;
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+  });
+});
+function closeLightbox() {
+  if (lightbox.contains(document.activeElement)) document.activeElement.blur();
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  lightboxImg.src = "";
+}
+document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (event) => { if (event.target === lightbox) closeLightbox(); });
+
+/* Фуллскрин для iframe-карточек */
+const fsOverlay = document.getElementById("fs-overlay");
+const fsFrame = document.getElementById("fs-frame");
+const fsTitle = document.getElementById("fs-title");
+document.querySelectorAll(".viz-fs").forEach((button) => {
+  button.addEventListener("click", () => {
+    fsFrame.src = button.dataset.fsSrc;
+    fsTitle.textContent = button.dataset.fsTitle;
+    fsOverlay.classList.add("open");
+    fsOverlay.setAttribute("aria-hidden", "false");
+  });
+});
+function closeFs() {
+  if (fsOverlay.contains(document.activeElement)) document.activeElement.blur();
+  fsOverlay.classList.remove("open");
+  fsOverlay.setAttribute("aria-hidden", "true");
+  fsFrame.src = "";
+}
+document.getElementById("fs-close").addEventListener("click", closeFs);
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (fsOverlay.classList.contains("open")) { closeFs(); } else { closeLightbox(); }
+});
+
+/* Высота демо под содержимое (паттерн 6): наблюдателя создаём в окне самого демо */
+const narrowQuery = window.matchMedia("(max-width: 760px)");
+document.querySelectorAll(".viz iframe").forEach((frame) => {
+  const baseHeight = Number(frame.getAttribute("height")) || 560;
+  const autofit = frame.hasAttribute("data-autofit");
+  let observer = null;
+  const fit = () => {
+    try {
+      const body = frame.contentDocument && frame.contentDocument.body;
+      if (!body) return;
+      frame.style.height = narrowQuery.matches || autofit ? `${Math.max(Math.min(baseHeight, 420), Math.ceil(body.scrollHeight) + 4)}px` : "";
+    } catch { /* другой origin (file://) — остаётся фиксированная высота */ }
+  };
+  const watch = () => {
+    fit();
+    try {
+      if (observer) observer.disconnect();
+      const FrameObserver = (frame.contentWindow && frame.contentWindow.ResizeObserver) || ResizeObserver;
+      observer = new FrameObserver(fit);
+      if (autofit) {
+        const refit = () => { fit(); [400, 1500, 7000].forEach((ms) => window.setTimeout(fit, ms)); };
+        frame.contentDocument.addEventListener("click", refit, true);
+        frame.contentDocument.addEventListener("input", refit, true);
+      }
+      observer.observe(frame.contentDocument.body);
+    } catch { /* нет доступа к документу демо */ }
+  };
+  frame.addEventListener("load", watch);
+  const details = frame.closest("details");
+  if (details) details.addEventListener("toggle", () => { if (details.open) { fit(); window.setTimeout(fit, 300); } });
+  try {
+    const doc = frame.contentDocument;
+    if (doc && doc.readyState === "complete" && doc.URL !== "about:blank") watch();
+  } catch { /* нет доступа к документу демо */ }
+  if (narrowQuery.addEventListener) narrowQuery.addEventListener("change", fit);
+});
+
+/* Копирование промптов */
+document.querySelectorAll("[data-copy]").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const code = document.getElementById(button.dataset.copy);
+    if (!code) return;
+    const original = button.textContent;
+    try { await navigator.clipboard.writeText(code.innerText); button.textContent = "Скопировано"; }
+    catch { button.textContent = "Выделите текст"; }
+    window.setTimeout(() => { button.textContent = original; }, 1600);
+  });
+});
+
+/* Голосование во входном блоке: кнопки только подсвечивают выбор, голосует зал в чате */
+const POLL_TEXT = {
+  yes: "Позиция зафиксирована: «секретного нет». Откройте разбор ниже — в письме пять утечек.",
+  no: "Позиция зафиксирована: «есть лишнее». Сколько утечек вы насчитали? Разбор — ниже.",
+};
+document.querySelectorAll(".poll-opt").forEach((option) => {
+  option.addEventListener("click", () => {
+    const group = option.dataset.poll;
+    document.querySelectorAll(`.poll-opt[data-poll="${group}"]`).forEach((o) => o.classList.toggle("chosen", o === option));
+    const answer = document.getElementById(`poll-answer-${group}`);
+    if (answer) answer.textContent = POLL_TEXT[option.dataset.vote];
+  });
+});
+
+/* Табло сравнения моделей: ? → ✓ → ✗ */
+document.querySelectorAll("#board .cell").forEach((cell) => {
+  cell.addEventListener("click", () => {
+    const next = {"?": "✓", "✓": "✗", "✗": "?"}[cell.textContent] || "?";
+    cell.textContent = next;
+    cell.classList.toggle("ok", next === "✓");
+    cell.classList.toggle("bad", next === "✗");
+  });
+});
+
+/* Чек-лист преподавателя */
+const CHECKLIST_KEY = "dpo1-urok3-slushatel-v1-checklist";
+const checklistInputs = [...document.querySelectorAll("[data-checklist-item]")];
+const checklistProgress = document.getElementById("checklist-progress");
+const checklistDone = document.getElementById("checklist-done");
+function loadChecklistState() {
+  try { return JSON.parse(localStorage.getItem(CHECKLIST_KEY) || "{}"); } catch { return {}; }
+}
+function saveChecklistState(state) {
+  try { localStorage.setItem(CHECKLIST_KEY, JSON.stringify(state)); } catch { /* приватный режим */ }
+}
+function renderChecklistProgress() {
+  const checked = checklistInputs.filter((input) => input.checked).length;
+  checklistProgress.style.width = `${Math.round((checked / checklistInputs.length) * 100)}%`;
+  checklistDone.hidden = checked !== checklistInputs.length;
+}
+const savedChecklist = loadChecklistState();
+checklistInputs.forEach((input) => {
+  const key = input.dataset.checklistItem;
+  input.checked = Boolean(savedChecklist[key]);
+  input.addEventListener("change", () => {
+    const state = loadChecklistState();
+    state[key] = input.checked;
+    saveChecklistState(state);
+    renderChecklistProgress();
+  });
+});
+renderChecklistProgress();
+
+/* Квиз */
+const QUIZ_TOTAL = document.querySelectorAll(".quiz-question").length;
+const QUIZ_EXPLAIN = {
+  1: "Важно, какая информация ушла, а не в каком виде. Пересказ характеристик — такая же передача, как загрузка паспорта изделия.",
+  2: "Юрисдикция и настройки снижают риски, но не меняют статус документа. Внутренний документ — только в инструмент, разрешённый организацией.",
+  3: "Чтобы обезличить, нейросеть должна получить оригинал. Обезличиваем у себя: «Найти и заменить», Инспектор документов, учебный обезличиватель.",
+  4: "Имя файла, автор и организация в свойствах, примечания рецензентов уходят вместе с файлом. Надёжнее вставлять текст.",
+  5: "Настройка обучения не удаляет данные: они хранятся на серверах сервиса. Рабочие документы это не разрешает.",
+  6: "Каждая новость открыта, но сводная карта поставщиков и сроков — новые сведения. Сомневаетесь — красный.",
+  7: "Пункт 5.1 условий «Алисы AI» от 10.09.2026: «исключительно для некоммерческого использования… для развлекательных целей».",
+  8: "Роль задаёт позицию, критерии и тон. В исследовании на 162 ролях точность ответов не выросла; права на данные роль не даёт.",
+};
+let quizAnswered = 0;
+const quizScoreEl = document.getElementById("quiz-score");
+document.querySelectorAll(".quiz-check").forEach((button) => {
+  button.addEventListener("click", () => {
+    const index = button.dataset.quizCheck;
+    const question = document.querySelector(`.quiz-question[data-quiz="${index}"]`);
+    const selected = question.querySelector(`input[name="q${index}"]:checked`);
+    const feedback = document.querySelector(`[data-quiz-feedback="${index}"]`);
+    if (!selected) {
+      feedback.textContent = "Выберите вариант ответа.";
+      feedback.className = "quiz-feedback incorrect";
+      feedback.hidden = false;
+      return;
+    }
+    const isCorrect = selected.value === "right";
+    feedback.textContent = (isCorrect ? "Верно. " : "Не совсем. ") + QUIZ_EXPLAIN[index];
+    feedback.className = `quiz-feedback ${isCorrect ? "correct" : "incorrect"}`;
+    feedback.hidden = false;
+    question.querySelectorAll("input").forEach((input) => { input.disabled = true; });
+    question.querySelector('input[value="right"]').closest("label").classList.add("quiz-correct-answer");
+    button.disabled = true;
+    quizAnswered += 1;
+    quizScoreEl.textContent = `Отвечено: ${quizAnswered} / ${QUIZ_TOTAL}`;
+  });
+});
+</script>
+</body>
+</html>

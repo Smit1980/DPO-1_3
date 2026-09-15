@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Найдите 12 идентификаторов: что выдаёт автора служебной записки</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Тренажёр к заданию А урока 3 · текст совпадает с data/urok3/14_SZ_Sidorenko_postavka_BP-12_ceh5.docx */
+.duo{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.duo{grid-template-columns:1fr}}
+.doc{background:#fffdf5;border:1px solid #fde68a;border-radius:14px;padding:18px 20px;font-family:Georgia,'Times New Roman',serif;font-size:.98rem;line-height:1.75}
+.doc .stamp{font-family:'Segoe UI',system-ui,sans-serif;font-size:.7rem;color:#a16207;margin-bottom:10px}
+.doc .right{text-align:right}
+.doc .title{text-align:center;font-weight:700;margin:10px 0}
+.doc p{margin-bottom:8px}
+.frag{cursor:pointer;border:none;background:transparent;font:inherit;color:inherit;padding:1px 3px;border-radius:5px;border-bottom:2px dotted #c7d2fe;text-align:inherit;line-height:inherit}
+.frag:hover{background:var(--indigo-lt)}
+.frag.marked{background:#fde68a;border-bottom-color:var(--amber)}
+.frag.hit{background:#bbf7d0;border-bottom:2px solid var(--green)}
+.frag.missed{background:#fecaca;border-bottom:2px dashed var(--red)}
+.frag.false{background:#e2e8f0;border-bottom-color:#94a3b8}
+.file{border:1px solid var(--border);border-radius:14px;padding:14px 16px;background:#fff}
+.file h2{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:8px}
+.file .row{display:block;margin-bottom:8px;font-size:.88rem;line-height:1.5}
+.file .row .l{display:block;font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.hidden-layer{margin-top:10px}
+.veil{padding:14px;border-radius:12px;background:repeating-linear-gradient(45deg,#f1f5f9,#f1f5f9 8px,#e2e8f0 8px,#e2e8f0 16px);text-align:center;font-size:.86rem;color:#475569}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.btn{padding:9px 16px;border-radius:9px;border:1px solid var(--indigo);background:var(--indigo);color:#fff;font:inherit;font-weight:800;font-size:.85rem;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--indigo-dk);border-color:#c7d2fe}
+.counter{font-size:.86rem;font-weight:800;color:var(--muted)}
+.result{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--indigo-lt);color:#312e81;font-size:.9rem;line-height:1.6}
+.result ol{margin:6px 0 0 18px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:.74rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+</style>
+</head>
+<body>
+
+<h1>Найдите 12 идентификаторов</h1>
+<p class="sub">Нажимайте на фрагменты, которые нужно убрать или заменить, прежде чем просить нейросеть написать претензию. Затем откройте «что уходит вместе с файлом» и нажмите «Проверить».</p>
+
+<div class="duo">
+  <div class="doc" id="doc">
+    <div class="stamp">УЧЕБНЫЙ МАТЕРИАЛ · СИНТЕТИЧЕСКИЕ ДАННЫЕ · не относятся к реальному предприятию</div>
+    <p class="right"><button type="button" class="frag" data-id="4">Начальнику отдела закупок<br>Гаврилову С. П.</button></p>
+    <p class="right">от <button type="button" class="frag" data-id="6">инженера ОТК цеха № 5</button><br><button type="button" class="frag" data-id="5">Сидоренко И. В.</button></p>
+    <p class="title">СЛУЖЕБНАЯ ЗАПИСКА <button type="button" class="frag" data-id="7">№ 214/ОТК от 11.09.2026</button></p>
+    <p>При входном контроле партии <button type="button" class="frag" data-id="10">блоков питания БП-12</button>, поставленной по договору <button type="button" class="frag" data-id="8">№ 45/2026-П</button> с <button type="button" class="frag" data-id="9">ООО «Поставщик-Альфа»</button>, выявлено <button type="button" class="frag" data-id="10">14 несоответствующих изделий из 200</button>. <button type="button" class="frag" data-id="">Изделия не выдерживают проверку выходного напряжения под нагрузкой.</button></p>
+    <p>Представитель поставщика, ответственный за качество, — <button type="button" class="frag" data-id="11">Смирнова Е. А., тел. +7 900 000-00-17</button> — о несоответствии уведомлена устно.</p>
+    <p><button type="button" class="frag" data-id="">Прошу подготовить претензию поставщику с требованием замены несоответствующих изделий</button> и предложением составить совместный акт.</p>
+    <p><button type="button" class="frag" data-id="6">Инженер ОТК</button><br><button type="button" class="frag" data-id="5">Сидоренко И. В.</button><br><button type="button" class="frag" data-id="12">i.sidorenko@zavod.test</button></p>
+  </div>
+
+  <div>
+    <div class="file">
+      <h2>Что уходит вместе с файлом</h2>
+      <div class="veil" id="veil">Скрыто — в тексте документа этого не видно.<br><button type="button" class="btn ghost" id="reveal" style="margin-top:8px">Показать</button></div>
+      <div class="hidden-layer" id="layer" hidden>
+        <span class="row"><span class="l">Имя файла</span><button type="button" class="frag" data-id="1">СЗ_Сидоренко_поставка_БП-12_цех5.docx</button></span>
+        <span class="row"><span class="l">Свойства файла → Автор · Организация</span><button type="button" class="frag" data-id="2">Сидоренко Игорь Витальевич · АО «Завод-Пример»</button></span>
+        <span class="row"><span class="l">Примечание рецензента на полях</span><button type="button" class="frag" data-id="3">«По НА-2 не писать — это для заказчика К.» — Н. К.</button></span>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" id="check">Проверить</button>
+      <button type="button" class="btn ghost" id="reset">Сбросить</button>
+      <span class="counter" id="counter" aria-live="polite">Отмечено: 0</span>
+    </div>
+    <div class="legend"><span><i style="background:#fde68a"></i>отмечено</span><span><i style="background:#bbf7d0"></i>найдено</span><span><i style="background:#fecaca"></i>пропущено</span><span><i style="background:#e2e8f0"></i>можно оставить</span></div>
+    <div class="result" id="result" hidden aria-live="polite"></div>
+  </div>
+</div>
+
+<p class="takeaway"><b>Главное:</b> четверть того, что выдаёт автора, в тексте не видна — имя файла, свойства и примечания уходят вместе с файлом. Надёжнее вставлять текст, а не файл, или пересоздать документ.</p>
+
+<script>
+const NAMES = {
+  1: "Имя файла — фамилия, изделие, цех",
+  2: "Свойства файла — автор и организация",
+  3: "Примечание рецензента — сведения о заказчике",
+  4: "ФИО и должность адресата",
+  5: "ФИО автора",
+  6: "Подразделение «ОТК цеха № 5»",
+  7: "Номер и дата записки",
+  8: "Номер договора",
+  9: "Контрагент",
+  10: "Комплектующее и объём партии",
+  11: "ФИО и телефон представителя поставщика — ПДн третьего лица",
+  12: "Адрес почты",
+};
+const fragments = [...document.querySelectorAll(".frag")];
+let checked = false;
+
+function sameGroup(frag) {
+  const id = frag.dataset.id;
+  return id ? fragments.filter((f) => f.dataset.id === id) : [frag];
+}
+function countMarked() {
+  const ids = new Set();
+  let decoys = 0;
+  fragments.forEach((f) => { if (f.classList.contains("marked")) { if (f.dataset.id) ids.add(f.dataset.id); else decoys += 1; } });
+  return ids.size + decoys;
+}
+fragments.forEach((frag) => {
+  frag.addEventListener("click", () => {
+    if (checked) return;
+    const turnOn = !frag.classList.contains("marked");
+    sameGroup(frag).forEach((f) => f.classList.toggle("marked", turnOn));
+    document.getElementById("counter").textContent = `Отмечено: ${countMarked()}`;
+  });
+});
+document.getElementById("reveal").addEventListener("click", () => {
+  document.getElementById("veil").hidden = true;
+  document.getElementById("layer").hidden = false;
+});
+document.getElementById("check").addEventListener("click", () => {
+  checked = true;
+  document.getElementById("veil").hidden = true;
+  document.getElementById("layer").hidden = false;
+  const found = new Set();
+  const missed = new Set();
+  fragments.forEach((f) => {
+    const marked = f.classList.contains("marked");
+    f.classList.remove("marked");
+    if (f.dataset.id) {
+      f.classList.add(marked ? "hit" : "missed");
+      (marked ? found : missed).add(f.dataset.id);
+    } else if (marked) {
+      f.classList.add("false");
+    }
+  });
+  const hiddenFound = ["1", "2", "3"].filter((id) => found.has(id)).length;
+  const list = [...missed].sort((a, b) => a - b).map((id) => `<li>${NAMES[id]}</li>`).join("");
+  const box = document.getElementById("result");
+  box.hidden = false;
+  box.innerHTML = `<b>Найдено ${found.size} из 12, из них скрытых — ${hiddenFound} из 3.</b>` +
+    (missed.size ? `<br>Пропущено:<ol>${list}</ol>` : "<br>Все двенадцать на месте.") +
+    "<br>Суть дефекта и просьбу о претензии оставляем — без них нейросеть не поймёт задачу.";
+});
+document.getElementById("reset").addEventListener("click", () => {
+  checked = false;
+  fragments.forEach((f) => f.classList.remove("marked", "hit", "missed", "false"));
+  document.getElementById("counter").textContent = "Отмечено: 0";
+  document.getElementById("result").hidden = true;
+  document.getElementById("veil").hidden = false;
+  document.getElementById("layer").hidden = true;
+});
+</script>
+</body>
+</html>

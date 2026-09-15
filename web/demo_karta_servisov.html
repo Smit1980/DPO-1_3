@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карта нейросетей: выбор = задача × данные × доступ</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* Карта сервисов · урок 3, блок 10 · оценки из Docs/reyting_i_karta_zadach.md (сводная оценка курса на 15.09.2026) */
+.controls{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px;margin-bottom:14px}
+@media (max-width:760px){.controls{grid-template-columns:1fr}}
+.group{border:1px solid var(--border);border-radius:14px;padding:12px 14px}
+.group .field-label{margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 11px;border-radius:100px;border:1px solid var(--border);background:#fff;font:inherit;font-size:.8rem;font-weight:700;color:var(--muted);cursor:pointer}
+.chip.active{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px}
+.svc{border:1px solid var(--border);border-radius:14px;padding:12px 14px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.svc.ru{border-top:4px solid #0047FF}
+.svc.foreign{border-top:4px solid #94a3b8}
+.svc h2{font-size:1rem;font-weight:800;display:flex;justify-content:space-between;gap:6px;align-items:baseline}
+.svc h2 a{color:var(--text);text-decoration:none}
+.svc h2 a:hover{text-decoration:underline}
+.svc h2 small{font-size:.7rem;font-weight:700;color:var(--muted)}
+.power{font-size:1.25rem;letter-spacing:2px;color:#0047FF}
+.power .off{color:#cbd5e1}
+.power-l{font-size:.78rem;color:var(--muted);margin-top:-4px}
+.line{font-size:.8rem;line-height:1.45;color:#334155}
+.line b{color:var(--muted);font-weight:700}
+.data{margin-top:4px;padding:7px 9px;border-radius:9px;font-size:.8rem;font-weight:700;line-height:1.4}
+.data.g{background:#dcfce7;color:#166534}
+.data.y{background:#fef3c7;color:#92400e}
+.data.r{background:#fee2e2;color:#991b1b}
+.note{margin-top:12px;font-size:.8rem;color:var(--muted);line-height:1.55}
+</style>
+</head>
+<body>
+
+<h1>Карта нейросетей: задача × данные × доступ</h1>
+<p class="sub">Выберите задачу и какие данные вы собираетесь отправить. Карточки покажут, кто силён в задаче и можно ли туда эти данные.</p>
+
+<div class="controls">
+  <div class="group">
+    <span class="field-label">Задача</span>
+    <div class="chips" id="tasks" role="group" aria-label="Задача"></div>
+  </div>
+  <div class="group">
+    <span class="field-label">Какие данные отправляю</span>
+    <div class="chips" id="datas" role="group" aria-label="Данные"></div>
+  </div>
+</div>
+
+<div class="cards" id="cards" aria-live="polite"></div>
+
+<p class="note">●●● сильная сторона · ●● справляется, проверять внимательнее · ● слабо или функции нет в обычном чате. Сводная оценка курса по рейтингам MERA 2.0 (15.09.2026), LLM Arena (13.09.2026), документации сервисов и справочнику урока 1 — не результат одного теста. Модели обновляются каждые несколько месяцев.</p>
+
+<p class="takeaway"><b>Главное:</b> по силе мировые лидеры впереди в длинных документах, логике и коде; российские модели сильны в текстах на русском и российском контексте. Но для рабочих данных решает не рейтинг, а нижняя строка карточки — можно ли их туда отправить.</p>
+
+<script>
+const TASKS = [
+  {id: "letter", name: "Письмо, записка, протокол"},
+  {id: "ru", name: "Российские реалии и термины"},
+  {id: "long", name: "Длинный документ"},
+  {id: "logic", name: "Логика и расчёты"},
+  {id: "code", name: "Код"},
+  {id: "search", name: "Свежая информация"},
+  {id: "image", name: "Картинка для слайда"},
+  {id: "vision", name: "Разбор фото или скана"},
+];
+const DATAS = [
+  {id: "open", name: "Открытые и учебные"},
+  {id: "anon", name: "Обезличенное описание"},
+  {id: "work", name: "Рабочий документ"},
+];
+const SERVICES = [
+  {name: "GigaChat", url: "https://giga.chat/", org: "Сбер", ru: true, access: "Без VPN", where: "РФ",
+   score: {letter: 3, ru: 3, long: 2, logic: 2, code: 2, search: 2, image: 3, vision: 2}},
+  {name: "Алиса AI", url: "https://alice.yandex.ru/", org: "Яндекс", ru: true, access: "Без VPN", where: "РФ",
+   score: {letter: 2, ru: 3, long: 2, logic: 2, code: 2, search: 3, image: 3, vision: 2}},
+  {name: "Qwen", url: "https://chat.qwen.ai/", org: "Alibaba", ru: false, access: "Обычно без VPN, без гарантии", where: "Сингапур, КНР",
+   score: {letter: 2, ru: 2, long: 2, logic: 3, code: 3, search: 2, image: 3, vision: 3}},
+  {name: "ChatGPT", url: "https://chatgpt.com/", org: "OpenAI", ru: false, access: "РФ официально не поддерживается", where: "США",
+   score: {letter: 3, ru: 2, long: 3, logic: 3, code: 3, search: 3, image: 3, vision: 3}},
+  {name: "DeepSeek", url: "https://chat.deepseek.com/", org: "DeepSeek", ru: false, access: "Обычно без VPN, без гарантии", where: "КНР",
+   score: {letter: 2, ru: 1, long: 2, logic: 3, code: 3, search: 2, image: 1, vision: 1}},
+  {name: "Claude", url: "https://claude.ai/", org: "Anthropic", ru: false, access: "РФ официально не поддерживается", where: "США",
+   score: {letter: 3, ru: 2, long: 3, logic: 3, code: 3, search: 2, image: 1, vision: 3}},
+  {name: "Gemini", url: "https://gemini.google.com/", org: "Google", ru: false, access: "РФ нет в списке регионов", where: "США",
+   score: {letter: 3, ru: 3, long: 3, logic: 3, code: 3, search: 3, image: 3, vision: 3}},
+];
+const POWER_LABEL = {1: "слабо или функции нет", 2: "справляется, проверять внимательнее", 3: "сильная сторона"};
+
+let task = "letter";
+let data = "anon";
+
+function verdict(service) {
+  if (data === "open") return {cls: "g", text: "🟢 Можно, если сервис не запрещён правилами организации"};
+  if (data === "anon") return service.ru
+    ? {cls: "y", text: "🟡 Только обезличенное и если разрешают правила организации"}
+    : {cls: "r", text: "🛑 Для рабочих задач — только открытое и учебное"};
+  return {cls: "r", text: "🛑 Нельзя. Рабочий документ — только в корпоративный инструмент, разрешённый организацией"};
+}
+
+function chips(containerId, list, current, onPick) {
+  const box = document.getElementById(containerId);
+  box.innerHTML = "";
+  list.forEach((item) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `chip ${item.id === current ? "active" : ""}`;
+    button.textContent = item.name;
+    button.setAttribute("aria-pressed", String(item.id === current));
+    button.addEventListener("click", () => onPick(item.id));
+    box.appendChild(button);
+  });
+}
+
+function render() {
+  chips("tasks", TASKS, task, (id) => { task = id; render(); });
+  chips("datas", DATAS, data, (id) => { data = id; render(); });
+  const box = document.getElementById("cards");
+  box.innerHTML = "";
+  [...SERVICES].sort((a, b) => b.score[task] - a.score[task]).forEach((service) => {
+    const s = service.score[task];
+    const v = verdict(service);
+    const card = document.createElement("div");
+    card.className = `svc ${service.ru ? "ru" : "foreign"}`;
+    card.innerHTML = `
+      <h2><a href="${service.url}" target="_blank" rel="noopener">${service.name}</a><small>${service.org}</small></h2>
+      <div class="power" aria-label="${POWER_LABEL[s]}">${"●".repeat(s)}<span class="off">${"●".repeat(3 - s)}</span></div>
+      <div class="power-l">${POWER_LABEL[s]}</div>
+      <div class="line"><b>Доступ из РФ:</b> ${service.access}</div>
+      <div class="line"><b>Где данные:</b> ${service.where}</div>
+      <div class="data ${v.cls}">${v.text}</div>`;
+    box.appendChild(card);
+  });
+}
+render();
+</script>
+</body>
+</html>
