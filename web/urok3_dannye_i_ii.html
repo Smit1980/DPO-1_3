@@ -46,8 +46,9 @@ nav.top::-webkit-scrollbar{display:none}
 #hero{min-height:100vh;padding:calc(var(--nav-h) + 56px) 24px 64px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
 .hero-badge{padding:5px 14px;background:var(--indigo-lt);border:1px solid #c7d2fe;border-radius:100px;font-size:.78rem;font-weight:700;color:var(--indigo-dk)}
-.hero-title{font-size:clamp(2rem,5.5vw,3.6rem);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:16px;max-width:900px}
+.hero-title{font-size:clamp(2rem,5.5vw,3.6rem);font-weight:900;line-height:1.12;letter-spacing:-1.5px;margin-bottom:10px;max-width:900px}
 .hero-title em{color:var(--indigo);font-style:normal}
+.hero-topic{font-size:clamp(1.05rem,2.2vw,1.45rem);font-weight:800;color:var(--indigo-dk);margin-bottom:12px;max-width:820px}
 .hero-sub{font-size:1.05rem;color:var(--muted);max-width:680px;margin-bottom:36px}
 .hero-img{max-width:900px;width:100%;margin-bottom:40px}
 .hero-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:860px}
@@ -319,15 +320,16 @@ table.board td:not(:first-child){text-align:center}
 <header id="hero">
 <div class="hero-badges">
 <span class="hero-badge">Раздел 2 · Безопасная работа с ИИ</span>
-<span class="hero-badge">Урок 3 · 90 минут</span>
+<span class="hero-badge">Урок 3.1 · 90 минут</span>
 <span class="hero-badge">Темы 1–2 · практикумы «Светофор данных» и «Что можно загрузить в ИИ?»</span>
 <span class="hero-badge">Для специалистов предприятий ОПК</span>
 </div>
-<h1 class="hero-title">Данные и ИИ: что можно <em>отправить</em> и куда</h1>
+<h1 class="hero-title">Урок 3.1 <em>Безопасная работа с искусственным интеллектом</em></h1>
+<p class="hero-topic">Данные и ИИ: что можно отправить и куда</p>
 <p class="hero-sub">За 90 минут вы научитесь отвечать на три вопроса до того, как нажать «Отправить»: <b>что</b> это за данные, <b>куда</b> они уйдут и <b>как</b> их подготовить, чтобы нейросеть помогла, а лишнее осталось у вас.</p>
 <figure class="img-card hero-img" data-lightbox="">
-<img alt="Слайд «Одна просьба — пять утечек»: сообщение в чат-бот с подчёркнутыми ФИО и подразделением, контрагентом, номером договора, изделием и объёмом брака, телефоном чужого сотрудника" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/01_odna_prosba_pyat_utechek.jpg"/>
-<figcaption class="img-missing-caption">Слайд 01 «Одна просьба — пять утечек»</figcaption>
+<img alt="Титульный слайд урока «Безопасная работа с данными в ИИ»: категории данных, подготовка информации и безопасная передача в ИИ-сервисы" fetchpriority="high" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/00_oblozhka_bezopasnaya_rabota_s_ii.png"/>
+<figcaption class="img-missing-caption">Титульный слайд «Безопасная работа с данными в ИИ»</figcaption>
 </figure>
 <nav aria-label="Разделы страницы" class="hero-nav">
 
@@ -349,6 +351,10 @@ table.board td:not(:first-child){text-align:center}
 <h2 class="sec-title">Вход: одна просьба — пять утечек </h2>
 <p class="sec-desc">Утечка редко выглядит как «слил секретный документ». Обычно это вежливая просьба помочь с письмом, в которую вставили лишнее.</p>
 </div>
+<figure class="img-card fade" data-lightbox="">
+<img alt="Слайд «Одна просьба — пять утечек»: сообщение в чат-бот с подчёркнутыми ФИО и подразделением, контрагентом, номером договора, изделием и объёмом брака, телефоном чужого сотрудника" loading="lazy" onerror="this.closest('.img-card').classList.add('img-missing')" src="../png/urok3_dannye_i_ii/01_odna_prosba_pyat_utechek.jpg"/>
+<figcaption class="img-missing-caption">Слайд 01 «Одна просьба — пять утечек»</figcaption>
+</figure>
 <div class="card fade">
 <p class="situation"><b>На экране — сообщение в бесплатную нейросеть.</b></p>
 <div class="prompt-box" style="margin-top:12px">
