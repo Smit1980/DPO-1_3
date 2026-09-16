@@ -860,6 +860,39 @@ table.board td:not(:first-child){text-align:center}
 <iframe data-autofit="" height="760" loading="lazy" src="demo_karta_servisov.html" title="Карта нейросетей: выбор = задача × данные × доступ"></iframe>
 </div>
 <p class="q-hint fade">Попробуйте: задача «Письмо, записка» + «Обезличенное описание» → затем переключите на «Рабочий документ». Сила модели не меняется, а нижняя строка карточки становится красной у всех.</p>
+<div class="note-callout fade">
+<p><strong>Возможность ≠ разрешение.</strong> Загрузка файла, поиск или генерация изображения не дают права передавать рабочие данные. Для реальных документов допустим только инструмент, разрешённый организацией; в публичные сервисы — открытые, учебные или корректно обезличенные данные.</p>
+</div>
+<div class="fine-table-wrap fade">
+<table class="fine-table">
+<caption>Возможности сервисов: чат и API — разные уровни</caption>
+<thead><tr><th>Сервис</th><th>В пользовательском чате</th><th>API и интеграции</th><th>Что можно анализировать</th><th>Что важно не перепутать</th></tr></thead>
+<tbody>
+<tr>
+<td class="t"><a class="svc-link" href="https://ya.ru/ai/gpt" rel="noopener" target="_blank">YandexGPT</a><br/>Алиса AI</td>
+<td>Алиса AI работает с текстами, документами и изображениями; может создавать и редактировать изображения, а также делать короткое видео из фото.</td>
+<td>YandexGPT в AI Studio: генерация и классификация текста, токенизация, Function Calling для подключения внешних инструментов.</td>
+<td>В Алисе AI — документы и изображения. YandexGPT API — прежде всего текстовая модель.</td>
+<td>Алиса AI — готовый сервис, YandexGPT — семейство моделей и API. Возможность прикрепить документ не означает, что рабочий документ разрешено загружать.</td>
+</tr>
+<tr>
+<td class="t"><a class="svc-link" href="https://giga.chat/" rel="noopener" target="_blank">GigaChat</a></td>
+<td>Создание и редактирование текстов, помощь с кодом, генерация изображений.</td>
+<td>API поддерживает работу с функциями для интеграций; встроенные функции — генерация изображений, работа с документами и создание 3D-моделей.</td>
+<td>Текстовые документы, изображения и аудиофайлы — в рамках поддерживаемых форматов и лимитов API.</td>
+<td>Вызов функции не является самостоятельным действием модели: она формирует параметры, а внешняя система выполняет операцию. Права, проверка результата и данные остаются на стороне организации.</td>
+</tr>
+<tr>
+<td class="t"><a class="svc-link" href="https://chat.deepseek.com/" rel="noopener" target="_blank">DeepSeek</a></td>
+<td>Чат, история, поиск в интернете, режим DeepThink, загрузка файлов и извлечение текста.</td>
+<td>Текстовые модели, рассуждения и вызов внешних функций. DeepSeek Flash принимает изображения вместе с текстом.</td>
+<td>В приложении — файлы для извлечения текста; в API — изображения JPEG, PNG, GIF и WebP.</td>
+<td>Нельзя считать аудио, видео или любые документы универсально поддерживаемым вводом во всех режимах. Возможности чата и API различаются.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="q-hint fade">Функции меняются вместе с тарифом, регионом, версией модели и настройками организации. Перед рабочим применением проверяем: <b>категорию данных → разрешённый контур → нужную функцию → условия хранения и обработки</b>. Источники: <a class="svc-link" href="https://alice.yandex.ru/support/ru/assistant/chat/files" rel="noopener" target="_blank">Алиса AI</a>, <a class="svc-link" href="https://aistudio.yandex.ru/en/docs/ai-studio/concepts/generation/function-call" rel="noopener" target="_blank">Yandex AI Studio</a>, <a class="svc-link" href="https://developers.sber.ru/docs/ru/gigachat/api/main" rel="noopener" target="_blank">GigaChat API</a>, <a class="svc-link" href="https://developers.sber.ru/docs/ru/gigachat/api/reference/rest/files-storage" rel="noopener" target="_blank">форматы GigaChat</a>, <a class="svc-link" href="https://api-docs.deepseek.com/news/news250115/" rel="noopener" target="_blank">DeepSeek App</a>, <a class="svc-link" href="https://api-docs.deepseek.com/guides/vision/" rel="noopener" target="_blank">DeepSeek Vision</a>.</p>
 <div class="grid fade">
 <div class="card">
 <p class="c-name">MERA 2.0 · русскоязычный бенчмарк</p>
